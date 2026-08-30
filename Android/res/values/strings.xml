@@ -487,6 +487,9 @@
     <string name="reboot_vehicle_unlock">reboot flight controller</string>
     <string name="reboot_vehicle_sent">Reboot command sent to the flight controller</string>
     <string name="reboot_vehicle_no_drone">Connect to a vehicle first</string>
+    <string name="menu_exit_app">Shut down &amp; exit</string>
+    <string name="exit_app_title">Exit Tower GCS</string>
+    <string name="exit_app_confirm">Disconnect from the vehicle and close the app?</string>
     <string name="label_clear_selected">Selected</string>
     <string name="unsaved_param_warning">You have unsaved changes</string>
     <string name="error_kill_switch_unsupported">KILL SWITCH command is not supported!</string>

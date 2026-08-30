@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -173,15 +172,9 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
             }
         }
 
-        try {
-            Preference versionPref = findPreference(DroidPlannerPrefs.PREF_APP_VERSION);
-            if (versionPref != null) {
-                String version = context.getPackageManager().getPackageInfo(
-                        context.getPackageName(), 0).versionName;
-                versionPref.setSummary(version);
-            }
-        } catch (NameNotFoundException e) {
-            Log.e(TAG, "Unable to retrieve version name.", e);
+        Preference versionPref = findPreference(DroidPlannerPrefs.PREF_APP_VERSION);
+        if (versionPref != null) {
+            versionPref.setSummary(getString(R.string.app_display_version));
         }
 
         setupWidgetsPreferences();

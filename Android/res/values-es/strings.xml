@@ -167,6 +167,10 @@
     <string name="clear_vehicle_mission_sent">Orden de borrado enviada al dron</string>
     <string name="clear_vehicle_not_connected">Conecta primero con un dron</string>
 
+    <string name="menu_exit_app">Apagar y salir</string>
+    <string name="exit_app_title">Salir de Tower GCS</string>
+    <string name="exit_app_confirm">¿Desconectar del dron y cerrar la aplicación?</string>
+
     <!-- Selection of map style -->
     <string name="menu_map_type_satellite">Satélite</string>
     <string name="menu_map_type_hybrid">Híbrido</string>

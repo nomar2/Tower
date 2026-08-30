@@ -7,6 +7,11 @@
         app:showAsAction="never"
         android:title="@string/menu_disconnect"/>
 
+    <item
+        android:id="@+id/menu_exit_app"
+        app:showAsAction="never"
+        android:title="@string/menu_exit_app"/>
+
     <group
         android:id="@+id/menu_group_connected"
         android:enabled="false"

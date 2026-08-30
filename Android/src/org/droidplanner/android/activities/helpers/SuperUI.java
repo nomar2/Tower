@@ -52,6 +52,7 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
         SupportYesNoDialog.Listener, ServiceConnection {
 
     private static final String MISSION_UPLOAD_CHECK_DIALOG_TAG = "Mission Upload check.";
+    private static final String EXIT_APP_DIALOG_TAG = "Exit app check.";
 
     private static final IntentFilter superIntentFilter = new IntentFilter();
 
@@ -330,6 +331,10 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
                 missionProxy.addTakeOffAndRTL();
                 missionProxy.sendMissionToAPM(drone);
                 break;
+
+            case EXIT_APP_DIALOG_TAG:
+                exitApplication();
+                break;
         }
     }
 
@@ -353,6 +358,16 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
             case R.id.menu_connect:
                 toggleDroneConnection();
                 return true;
+
+            case R.id.menu_exit_app: {
+                SupportYesNoDialog exitDialog = SupportYesNoDialog.newInstance(getApplicationContext(),
+                        EXIT_APP_DIALOG_TAG, getString(R.string.exit_app_title),
+                        getString(R.string.exit_app_confirm));
+                if (exitDialog != null) {
+                    exitDialog.show(getSupportFragmentManager(), EXIT_APP_DIALOG_TAG);
+                }
+                return true;
+            }
 
             case R.id.menu_upload_mission: {
                 final MissionProxy missionProxy = dpApp.getMissionProxy();
@@ -461,6 +476,29 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), R.string.error_kill_switch_failed, Toast.LENGTH_LONG).show();
         }
+    }
+
+    /**
+     * Disconnects from the vehicle and shuts the app down completely: every
+     * activity in the task is closed, the background service drops its
+     * foreground notification, and the process is terminated so nothing is left
+     * running.
+     */
+    private void exitApplication() {
+        try {
+            dpApp.disconnectFromDrone();
+        } catch (Exception e) {
+            // Leaving anyway - nothing useful to do with a disconnect failure here.
+        }
+
+        finishAffinity();
+
+        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
+        }, 400);
     }
 
     public void toggleDroneConnection() {

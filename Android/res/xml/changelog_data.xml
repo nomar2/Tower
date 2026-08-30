@@ -20,6 +20,9 @@
         <changelogimprovement>MAVLink 2 protocol support (auto-negotiated)</changelogimprovement>
         <changelogimprovement>Reworked GUIDED follow-me: smoothed position + velocity setpoints at 5 Hz, lead prediction</changelogimprovement>
         <changelogimprovement>"Reboot flight controller" action added to the connected menu</changelogimprovement>
+        <changelogimprovement>"Clear vehicle mission" option in the editor trash tool</changelogimprovement>
+        <changelogimprovement>"Shut down &amp; exit" menu action: disconnects and closes the app</changelogimprovement>
+        <changelogimprovement>Renamed to "Tower GCS"; About screen shows "Tower GCS v4.0.2"</changelogimprovement>
         <changelogimprovement>Scoped storage for missions and parameters; app-owned foreground service</changelogimprovement>
         <changelogtext>Removed dead integrations (Baidu Maps, Droneshare upload, Google Analytics, Weather Underground)</changelogtext>
         <changelogtext>Fixed touch/ANR freeze, connect crashes and flight-mode-change crash</changelogtext>

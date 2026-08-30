@@ -15,6 +15,9 @@ def getMapsApiKey() {
 
 def versionPrefix = "Tower-v"
 
+// Public display name shown in the About screen.
+def displayName = "Tower GCS"
+
 //Decomposed version name and code
 def versionMajor = 4
 def versionMinor = 0
@@ -48,6 +51,8 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         manifestPlaceholders = [mapsApiKey: getMapsApiKey()]
+
+        resValue "string", "app_display_version", "${displayName} v${versionMajor}.${versionMinor}.${versionPatch}"
     }
 
     compileOptions {
@@ -100,7 +105,7 @@ android {
         dev {
             dimension "distribution"
             applicationIdSuffix ".debug"
-            resValue "string", "app_title", "Tower Dev"
+            resValue "string", "app_title", "Tower GCS"
             resValue "string", "baidu_api_key", ""
             versionName generateVersionName(versionPrefix, versionMajor, versionMinor, versionPatch, "debug.${versionBuild}")
         }
@@ -108,14 +113,14 @@ android {
         beta {
             dimension "distribution"
             applicationIdSuffix ".beta"
-            resValue "string", "app_title", "Tower Beta"
+            resValue "string", "app_title", "Tower GCS"
             resValue "string", "baidu_api_key", ""
             versionName generateVersionName(versionPrefix, versionMajor, versionMinor, versionPatch, "beta.${versionBuild}")
         }
 
         prod {
             dimension "distribution"
-            resValue "string", "app_title", "Tower"
+            resValue "string", "app_title", "Tower GCS"
             resValue "string", "baidu_api_key", ""
             buildConfigField "boolean", "WRITE_LOG_FILE", "false"
         }
