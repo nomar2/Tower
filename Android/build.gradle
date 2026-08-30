@@ -139,6 +139,15 @@ android {
             excludes += ['META-INF/DEPENDENCIES', 'META-INF/LICENSE', 'META-INF/LICENSE.txt',
                          'META-INF/NOTICE', 'META-INF/NOTICE.txt', 'META-INF/*.kotlin_module']
         }
+        jniLibs {
+            useLegacyPackaging = true
+            // The bundled libuvccamera .aar ships 32-bit-only native code (no
+            // arm64/x86_64). Dropping it keeps the APK ABI-universal so it
+            // installs on every Android 16 device; the optional USB-camera
+            // ("UVC") video widget degrades gracefully (see BaseUVCVideoWidget).
+            excludes += ['**/libUVCCamera.so', '**/libjpeg-turbo1500.so',
+                         '**/libusb100.so', '**/libuvc.so']
+        }
     }
 }
 
@@ -184,11 +193,8 @@ dependencies {
 
     implementation 'me.grantland:autofittextview:0.2.1'
     implementation(name: 'shimmer-android-release', ext: 'aar')
+    implementation(name: 'libuvccamera-release', ext: 'aar')
     implementation(name: 'sliding-up-panel-3.3.0', ext: 'aar')
-
-    // USB Video Class receivers (e.g. Eachine ROTG 5.8 GHz FPV dongles).
-    // Maintained fork of saki4510t/UVCCamera with 64-bit, 16 KB-aligned native libraries.
-    implementation 'com.herohan:UVCAndroid:1.0.13'
 
     implementation files('libs/droneapi-java-0.3-SNAPSHOT.jar')
     implementation files('libs/protobuf-java-2.5.0.jar')

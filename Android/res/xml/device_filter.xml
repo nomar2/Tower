@@ -15,12 +15,4 @@
     <usb-device vendor-id="4292" product-id="60000" /><!-- CP210x UART Bridge -->
     <usb-device vendor-id="1118" product-id="688"/>
     <usb-device vendor-id="1659" product-id="8963" /><!-- PL2303 -->
-
-    <!-- USB Video Class receivers (Eachine ROTG / Skydroid 5.8 GHz FPV dongles,
-         analogue AV-to-USB adapters). The UVCAndroid library reads this same
-         resource name, so its filter entries have to live here too. -->
-    <usb-device class="14" />                <!-- Video interface base class -->
-    <usb-device class="239" subclass="2" />  <!-- Misc / IAD: most UVC webcams and FPV dongles -->
-    <usb-device vendor-id="7025" />          <!-- Fushicai USBTV (common in cheap AV-to-USB) -->
-    <usb-device vendor-id="21299" />         <!-- MacroSilicon MS210x/MS213x -->
 </resources>

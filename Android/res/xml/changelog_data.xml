@@ -20,7 +20,6 @@
         <changelogimprovement>MAVLink 2 protocol support (auto-negotiated)</changelogimprovement>
         <changelogimprovement>Reworked GUIDED follow-me: smoothed position + velocity setpoints at 5 Hz, lead prediction</changelogimprovement>
         <changelogimprovement>"Reboot flight controller" action added to the connected menu</changelogimprovement>
-        <changelogimprovement>Rebuilt the USB video (UVC) widget on a 64-bit library (Eachine ROTG / Skydroid FPV receivers)</changelogimprovement>
         <changelogimprovement>Scoped storage for missions and parameters; app-owned foreground service</changelogimprovement>
         <changelogtext>Removed dead integrations (Baidu Maps, Droneshare upload, Google Analytics, Weather Underground)</changelogtext>
         <changelogtext>Fixed touch/ANR freeze, connect crashes and flight-mode-change crash</changelogtext>

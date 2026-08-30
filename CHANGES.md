@@ -12,7 +12,6 @@ and Alejandro Moreno.
 - `compileSdk 36`, `minSdk 24`, `targetSdk 34`; namespace-based manifest.
 - Removed Fabric/Crashlytics and the dead jcenter/bintray/3DR repositories.
 - Baidu Maps SDK removed entirely (SDK, native libs, map provider, preferences).
-- LeakCanary updated to 2.x (debug only).
 - Google Maps key read from `local.properties` (`MAPS_API_KEY`) via a manifest
   placeholder.
 
@@ -44,11 +43,6 @@ and Alejandro Moreno.
 
 - **Reboot flight controller** — menu action (shown when connected), confirmed
   with a slide-to-unlock, sends `MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN`.
-- **USB video (UVC) widget rebuilt** — the dead 2016 `libuvccamera` (32-bit only)
-  was replaced with the maintained `com.herohan:UVCAndroid` (arm64 + all ABIs).
-  The widget shows a live preview from a USB Video Class receiver such as an
-  Eachine ROTG / Skydroid 5.8 GHz FPV dongle. Off by default; enable it from the
-  widget list. Adds native libraries back to the APK (~2 MB).
 - **Improved GUIDED follow-me**:
   - alpha/beta filter over the operator's position and ground velocity;
   - setpoints streamed at 5 Hz with dead-reckoning between GPS fixes

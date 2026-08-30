@@ -14,12 +14,8 @@ release-signing pipeline.
 - [ ] **Signed release build** — add a `signingConfig`, produce and test a
       release APK. Optionally enable R8/minify with `-keep` rules (the
       reflection-based `ExperimentalApi.sendMavlinkMessage` path must be kept).
-- [ ] **targetSdk 34 → 35** — required by Google Play for new uploads. The only
-      native libraries are the 16 KB-aligned UVC libs, so this should be close to
-      direct.
-- [ ] **Per-ABI APK splits** — the universal APK is ~21 MB because of the four
-      ABIs of UVC native code; `splits { abi { ... } }` would cut each download
-      to ~14 MB.
+- [ ] **targetSdk 34 → 35** — required by Google Play for new uploads; should be
+      near-direct since no native libraries remain in the APK.
 - [ ] **Vehicle setup / calibration** — the compass / accelerometer / radio /
       ESC screens send MAVLink and are currently untested.
 - [x] **CI** — GitHub Actions builds the debug APK on every push
@@ -27,10 +23,9 @@ release-signing pipeline.
 
 ## Priority 2 — features
 
-- [x] **USB 5.8 GHz video (Eachine ROTG etc.)** — the dead 2016 `libuvccamera`
-      was replaced with `com.herohan:UVCAndroid` and the UVC widget rebuilt.
-      Verified to build and start without a device; the actual preview needs
-      testing with a real receiver on a USB-OTG phone.
+- [ ] **USB 5.8 GHz video (Eachine ROTG etc.)** — replace the dead 2016
+      `libuvccamera` with a maintained arm64 UVC library
+      (`com.herohan:UVCAndroid`) and re-enable the UVC video widget.
 - [ ] **External Bluetooth / USB GPS** as the follow-me position source (the
       phone GPS is the weak link), plus an in-flight panel to tune the follow
       lead / radius / altitude.
