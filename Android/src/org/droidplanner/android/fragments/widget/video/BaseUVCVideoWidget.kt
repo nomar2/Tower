@@ -2,6 +2,7 @@ package org.droidplanner.android.fragments.widget.video
 
 import android.graphics.Matrix
 import android.graphics.SurfaceTexture
+import android.hardware.usb.UsbConstants
 import android.hardware.usb.UsbDevice
 import android.os.Bundle
 import android.util.Log
@@ -89,8 +90,26 @@ abstract class BaseUVCVideoWidget : TowerWidget() {
         helper.setStateCallback(stateCallback)
         cameraHelper = helper
         showStatus(true)
-        // The device may already be attached when the widget opens.
-        helper.deviceList?.firstOrNull()?.let { helper.selectDevice(it) }
+        // The device may already be attached when the widget opens; the library's
+        // periodic scan will also re-notify onAttach shortly.
+        helper.deviceList?.firstOrNull { isUvcDevice(it) }?.let { helper.selectDevice(it) }
+    }
+
+    /**
+     * The shared USB device filter also matches serial adapters (Pixhawk etc.),
+     * so make sure we only ever select an actual video-class device.
+     */
+    private fun isUvcDevice(device: UsbDevice): Boolean {
+        if (device.deviceClass == UsbConstants.USB_CLASS_VIDEO ||
+            device.deviceClass == UsbConstants.USB_CLASS_MISC) {
+            return true
+        }
+        for (i in 0 until device.interfaceCount) {
+            if (device.getInterface(i).interfaceClass == UsbConstants.USB_CLASS_VIDEO) {
+                return true
+            }
+        }
+        return false
     }
 
     private fun stopCamera() {
@@ -105,8 +124,11 @@ abstract class BaseUVCVideoWidget : TowerWidget() {
 
     private val stateCallback = object : ICameraHelper.StateCallback {
         override fun onAttach(device: UsbDevice) {
-            // Request permission for / select the freshly attached device.
-            cameraHelper?.selectDevice(device)
+            // Request permission for / select the freshly attached device
+            // (ignore serial adapters that also match the shared filter).
+            if (isUvcDevice(device)) {
+                cameraHelper?.selectDevice(device)
+            }
         }
 
         override fun onDeviceOpen(device: UsbDevice, isFirstOpen: Boolean) {
