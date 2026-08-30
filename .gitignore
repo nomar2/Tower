@@ -1,0 +1,38 @@
+# Built application files
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Compiled class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+
+# Gradle
+.gradle/
+.gradle-home/
+build/
+Android/build/
+
+# Local configuration (SDK path, API keys) - never commit
+local.properties
+
+# IDE
+*.iml
+.idea/
+.vscode/
+.settings/
+.project
+.classpath
+.metadata
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

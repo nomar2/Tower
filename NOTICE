@@ -1,0 +1,22 @@
+Tower - Ground Control Station for ArduPilot UAVs
+
+This program is a modified version of DroidPlanner / Tower
+(https://github.com/DroidPlanner/Tower).
+
+Original work:
+  Copyright (C) Arthur Benemann, 3D Robotics, Inc.,
+  and the Tower / DroidPlanner contributors.
+
+Modifications (2026):
+  Copyright (C) 2026 Ramón José Moreno, Alejandro Moreno.
+
+The modifications update the project to build and run on current Android
+releases and add functional fixes and features; a summary is in CHANGES.md.
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License version 3, as published by the Free
+Software Foundation. See LICENSE.md for the full text.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.

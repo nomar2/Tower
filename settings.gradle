@@ -1,0 +1,23 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        // Mirror that still serves the discontinued 3DR / o3dr artifacts (dronekit-android)
+        maven { url 'https://artifactory.appodeal.com/appodeal-public' }
+        flatDir { dirs "${rootDir}/Android/libs" }
+    }
+}
+
+rootProject.name = "Tower"
+
+include ':Android'

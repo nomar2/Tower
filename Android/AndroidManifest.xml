@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:installLocation="auto">
+
+    <supports-screens android:requiresSmallestWidthDp="320"/>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <!-- Storage: the app now uses its own scoped directories (getExternalFilesDir),
+         so no storage permission is required on any Android version.
+         The bundled dronekit-android .aar still declares WRITE_EXTERNAL_STORAGE; drop it. -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+                     tools:ignore="ProtectedPermissions"/>
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE"/>
+
+    <!-- Legacy Bluetooth (<= API 30) -->
+    <uses-permission android:name="android.permission.BLUETOOTH"
+                     android:maxSdkVersion="30"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+                     android:maxSdkVersion="30"/>
+    <!-- Bluetooth (API 31+) -->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"
+                     android:usesPermissionFlags="neverForLocation"
+                     tools:targetApi="s"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"
+                     tools:targetApi="s"/>
+
+    <uses-feature android:name="android.hardware.screen.portrait"/>
+
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.usb.host"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.location.network"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="false"/>
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true"/>
+
+    <application
+        android:name=".DroidPlannerApp"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_title"
+        android:largeHeap="true"
+        android:theme="@style/CustomActionBarTheme"
+        android:windowSoftInputMode="adjustPan">
+
+        <!-- Google Maps key comes from local.properties (MAPS_API_KEY=...). -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${mapsApiKey}"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+
+        <activity
+            android:name=".activities.FlightActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/CustomActionBarTheme.Transparent">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.EditorActivity"
+            android:exported="true"
+            android:label="@string/editor"
+            android:launchMode="singleTop"
+            android:theme="@style/CustomActionBarTheme.Transparent"
+            android:windowSoftInputMode="adjustNothing">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.ConfigurationActivity"
+            android:exported="false"
+            android:label="@string/menu_drone_setup"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:exported="false"
+            android:label="@string/settings"
+            android:launchMode="singleTop"/>
+        <activity
+            android:name=".activities.helpers.MapPreferencesActivity"
+            android:exported="false"
+            android:label="@string/activity_title_map_provider_preferences"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.SettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.SettingsActivity"/>
+        </activity>
+        <activity
+            android:name=".tlog.TLogActivity"
+            android:exported="false"
+            android:label="@string/locator"
+            android:launchMode="singleTop"/>
+        <activity
+            android:name=".activities.WidgetActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.FlightActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.FlightActivity"/>
+        </activity>
+        <activity
+            android:name=".activities.helpers.BluetoothDevicesActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:noHistory="true"
+            android:theme="@style/CustomDialogTheme"/>
+        <activity
+            android:name=".maps.providers.google_map.DownloadMapboxMapActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:noHistory="true"
+            android:theme="@style/CustomActionBarTheme.Transparent"/>
+
+        <service
+            android:name=".AppService"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice"/>
+
+        <!-- Overrides for the bundled dronekit-android 3.0.2 lib (pre-Android-12 manifest) -->
+        <activity
+            android:name="org.droidplanner.services.android.impl.ui.activity.UsbIntentReceiver"
+            android:exported="true"
+            tools:node="merge"/>
+        <service
+            android:name="org.droidplanner.services.android.impl.api.DroidPlannerService"
+            android:enabled="true"
+            android:exported="true"
+            android:foregroundServiceType="connectedDevice"
+            tools:replace="android:enabled,android:exported,android:foregroundServiceType"
+            tools:node="merge"/>
+
+    </application>
+
+</manifest>

@@ -1,0 +1,234 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+// Google Maps API key: put MAPS_API_KEY=AIza... in local.properties (or -PMAPS_API_KEY=...).
+// Falls back to the historical 3DR key (only valid for 3DR-signed builds).
+def getMapsApiKey() {
+    def props = new Properties()
+    def lp = rootProject.file('local.properties')
+    if (lp.exists()) lp.withInputStream { props.load(it) }
+    def key = props.getProperty('MAPS_API_KEY')
+    if (key == null && project.hasProperty('MAPS_API_KEY')) key = project.property('MAPS_API_KEY')
+    return (key != null && !key.trim().isEmpty()) ? key.trim()
+            : 'AIzaSyA2oC6zsx-Ir4be8bWFWrAej7FcKdrWGdA'
+}
+
+def versionPrefix = "Tower-v"
+
+//Decomposed version name and code
+def versionMajor = 4
+def versionMinor = 0
+def versionPatch = 1
+def versionBuild = 0
+
+//Logging levels
+def logLevelVerbose = 2
+def logLevelDebug = 3
+def logLevelInfo = 4
+def logLevelWarn = 5
+def logLevelError = 6
+def logLevelAssert = 7
+
+android {
+    namespace 'org.droidplanner.android'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'org.droidplanner.android'
+        minSdkVersion 24
+        targetSdkVersion 34
+        versionCode computeVersionCode(versionMajor, versionMinor, versionPatch, versionBuild)
+        versionName generateVersionName(versionPrefix, versionMajor, versionMinor, versionPatch)
+
+        buildConfigField "boolean", "WRITE_LOG_FILE", "true"
+        buildConfigField "int", "LOG_FILE_LEVEL", "$logLevelDebug"
+        buildConfigField "boolean", "ENABLE_CRASHLYTICS", "false"
+
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+
+        manifestPlaceholders = [mapsApiKey: getMapsApiKey()]
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled true
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    buildFeatures {
+        buildConfig true
+        viewBinding false
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            kotlin.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+            jniLibs.srcDir 'jni/libs'
+        }
+    }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+
+    signingConfigs {
+        release {
+            def ksFile = getAppKeystoreFile()
+            if (ksFile != null) {
+                storeFile ksFile
+                storePassword getAppKeystorePassword()
+                keyAlias getAppKey()
+                keyPassword getAppKeyPassword()
+            }
+        }
+    }
+
+    flavorDimensions += "distribution"
+
+    productFlavors {
+        dev {
+            dimension "distribution"
+            applicationIdSuffix ".debug"
+            resValue "string", "app_title", "Tower Dev"
+            resValue "string", "baidu_api_key", ""
+            versionName generateVersionName(versionPrefix, versionMajor, versionMinor, versionPatch, "debug.${versionBuild}")
+        }
+
+        beta {
+            dimension "distribution"
+            applicationIdSuffix ".beta"
+            resValue "string", "app_title", "Tower Beta"
+            resValue "string", "baidu_api_key", ""
+            versionName generateVersionName(versionPrefix, versionMajor, versionMinor, versionPatch, "beta.${versionBuild}")
+        }
+
+        prod {
+            dimension "distribution"
+            resValue "string", "app_title", "Tower"
+            resValue "string", "baidu_api_key", ""
+            buildConfigField "boolean", "WRITE_LOG_FILE", "false"
+        }
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "boolean", "ENABLE_CRASHLYTICS", "false"
+        }
+
+        release {
+            minifyEnabled false
+            signingConfig getAppKeystoreFile() != null ? signingConfigs.release : signingConfigs.debug
+            buildConfigField "boolean", "ENABLE_CRASHLYTICS", "false"
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard.cfg'
+        }
+    }
+
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/DEPENDENCIES', 'META-INF/LICENSE', 'META-INF/LICENSE.txt',
+                         'META-INF/NOTICE', 'META-INF/NOTICE.txt', 'META-INF/*.kotlin_module']
+        }
+        jniLibs {
+            useLegacyPackaging = true
+            // The bundled libuvccamera .aar ships 32-bit-only native code (no
+            // arm64/x86_64). Dropping it keeps the APK ABI-universal so it
+            // installs on every Android 16 device; the optional USB-camera
+            // ("UVC") video widget degrades gracefully (see BaseUVCVideoWidget).
+            excludes += ['**/libUVCCamera.so', '**/libjpeg-turbo1500.so',
+                         '**/libusb100.so', '**/libuvc.so']
+        }
+    }
+}
+
+// Build only the variants we care about.
+androidComponents {
+    beforeVariants(selector().all()) { variantBuilder ->
+        def flavor = variantBuilder.productFlavors.find { it.first == "distribution" }?.second
+        def type = variantBuilder.buildType
+        def keep = (type == "release" && (flavor == "prod" || flavor == "beta")) ||
+                   (type == "debug" && flavor == "dev")
+        variantBuilder.enable = keep
+    }
+}
+
+dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+
+    implementation 'androidx.multidex:multidex:2.0.1'
+
+    implementation 'com.google.android.gms:play-services-maps:19.0.0'
+    implementation 'com.google.android.gms:play-services-location:21.3.0'
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v13:1.0.0'
+    implementation 'androidx.preference:preference:1.2.1'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
+    implementation 'com.google.android.material:material:1.11.0'
+
+    // DroneKit-Android client library. Local build of 3.0.2 with fixes applied
+    // (foreground-service notification channels, MAVLink 2 framing, USB/Wi-Fi
+    // connection handlers, and an improved GUIDED follow-me). The upstream
+    // artifact repository is offline, so the .aar is vendored under libs/.
+    implementation(name: 'dronekit-android-3.0.2', ext: 'aar')
+    // dronekit-android 3.0.2 POM transitive deps (now declared explicitly):
+    implementation 'org.droidplanner.android:usb-serial-android:0.1.0'
+    implementation 'com.github.zafarkhaja:java-semver:0.9.0'
+    implementation 'com.jcraft:jsch:0.1.51'
+    implementation 'com.googlecode.mp4parser:isoparser:1.1.7'
+    implementation 'com.google.android.gms:play-services-base:18.5.0'
+
+    implementation 'me.grantland:autofittextview:0.2.1'
+    implementation(name: 'shimmer-android-release', ext: 'aar')
+    implementation(name: 'libuvccamera-release', ext: 'aar')
+    implementation(name: 'sliding-up-panel-3.3.0', ext: 'aar')
+
+    implementation files('libs/droneapi-java-0.3-SNAPSHOT.jar')
+    implementation files('libs/protobuf-java-2.5.0.jar')
+    implementation files('libs/jeromq-0.3.4.jar')
+    implementation files('libs/sius-0.3.1-SNAPSHOT.jar')
+
+    implementation 'com.squareup.okhttp:okhttp:2.7.5'
+    implementation 'com.squareup.okhttp:okhttp-urlconnection:2.7.5'
+
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.24"
+
+    //Charts and graph library
+    implementation 'com.github.lecho:hellocharts-library:1.5.5@aar'
+
+    //Leak canary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.13'
+}
+
+/* ---- signing helpers ---- */
+
+def getAppKeystoreFile() {
+    def filePath = hasProperty('ORG_DROIDPLANNER_ANDROID_KEYSTORE') ? ORG_DROIDPLANNER_ANDROID_KEYSTORE : null
+    return filePath ? file(filePath) : null
+}
+
+def getAppKeystorePassword() {
+    return hasProperty('ORG_DROIDPLANNER_ANDROID_KEYSTORE_PWD') ? ORG_DROIDPLANNER_ANDROID_KEYSTORE_PWD : ''
+}
+
+def getAppKeyPassword() {
+    return hasProperty('ORG_DROIDPLANNER_ANDROID_KEY_PWD') ? ORG_DROIDPLANNER_ANDROID_KEY_PWD : ''
+}
+
+def getAppKey() {
+    return hasProperty('ORG_DROIDPLANNER_ANDROID_KEY_ALIAS') ? ORG_DROIDPLANNER_ANDROID_KEY_ALIAS : ''
+}

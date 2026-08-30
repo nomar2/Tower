@@ -1,0 +1,11 @@
+# Copy this file to "local.properties" and fill in your values.
+# local.properties is git-ignored and must not be committed.
+
+# Path to your Android SDK
+sdk.dir=C:\\Users\\you\\AppData\\Local\\Android\\Sdk
+
+# Google Maps Android API key.
+# Requires "Maps SDK for Android" enabled, with an Android app restriction for
+# org.droidplanner.android and org.droidplanner.android.debug plus your signing
+# certificate SHA-1.
+MAPS_API_KEY=YOUR_GOOGLE_MAPS_ANDROID_API_KEY

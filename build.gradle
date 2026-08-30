@@ -1,0 +1,25 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+plugins {
+    id 'com.android.application' version '8.5.2' apply false
+    id 'org.jetbrains.kotlin.android' version '1.9.24' apply false
+}
+
+def computeVersionCode(int versionMajor, int versionMinor, int versionPatch, int versionBuild = 0) {
+    return versionMajor * 100000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+}
+
+def generateVersionName(String versionPrefix, int versionMajor, int versionMinor, int versionPatch, String versionSuffix = "") {
+    def versionName = "${versionPrefix}${versionMajor}.${versionMinor}.${versionPatch}"
+
+    if (versionSuffix != null && !versionSuffix.isEmpty() && versionSuffix != "release") {
+        versionName += "-${versionSuffix}"
+    }
+
+    return versionName
+}
+
+ext {
+    computeVersionCode = this.&computeVersionCode
+    generateVersionName = this.&generateVersionName
+}
