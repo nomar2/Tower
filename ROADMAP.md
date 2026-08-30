@@ -14,8 +14,12 @@ release-signing pipeline.
 - [ ] **Signed release build** — add a `signingConfig`, produce and test a
       release APK. Optionally enable R8/minify with `-keep` rules (the
       reflection-based `ExperimentalApi.sendMavlinkMessage` path must be kept).
-- [ ] **targetSdk 34 → 35** — required by Google Play for new uploads; should be
-      near-direct since no native libraries remain in the APK.
+- [ ] **targetSdk 34 → 35** — required by Google Play for new uploads. The only
+      native libraries are the 16 KB-aligned UVC libs, so this should be close to
+      direct.
+- [ ] **Per-ABI APK splits** — the universal APK is ~21 MB because of the four
+      ABIs of UVC native code; `splits { abi { ... } }` would cut each download
+      to ~14 MB.
 - [ ] **Vehicle setup / calibration** — the compass / accelerometer / radio /
       ESC screens send MAVLink and are currently untested.
 - [x] **CI** — GitHub Actions builds the debug APK on every push
