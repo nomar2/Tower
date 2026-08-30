@@ -53,6 +53,10 @@ enum class TowerWidgets(@IdRes val idRes: Int, @StringRes val labelResId: Int, @
 
         override fun internalIsVisibleByDefault() = false
 
+        // Hidden from the widgets list: the bundled UVC library is the dead 2016
+        // build with 32-bit-only native code, so it never shows video anyway.
+        override fun isEnabled() = false
+
         override fun getMinimizedFragment() = MiniWidgetUVCLinkVideo()
 
         override fun getMaximizedFragment() = FullWidgetUVCLinkVideo()
