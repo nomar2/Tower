@@ -15,14 +15,16 @@
     </changelogversion>
     -->
 
-    <changelogversion versionName="4.0.1" changeDate="Aug 30, 2026">
+    <changelogversion versionName="4.0.2" changeDate="Aug 30, 2026">
         <changelogimprovement>Updated to build and run on current Android (targetSdk 34, AndroidX, Gradle 8)</changelogimprovement>
         <changelogimprovement>MAVLink 2 protocol support (auto-negotiated)</changelogimprovement>
         <changelogimprovement>Reworked GUIDED follow-me: smoothed position + velocity setpoints at 5 Hz, lead prediction</changelogimprovement>
         <changelogimprovement>"Reboot flight controller" action added to the connected menu</changelogimprovement>
+        <changelogimprovement>Rebuilt the USB video (UVC) widget on a 64-bit library (Eachine ROTG / Skydroid FPV receivers)</changelogimprovement>
         <changelogimprovement>Scoped storage for missions and parameters; app-owned foreground service</changelogimprovement>
         <changelogtext>Removed dead integrations (Baidu Maps, Droneshare upload, Google Analytics, Weather Underground)</changelogtext>
         <changelogtext>Fixed touch/ANR freeze, connect crashes and flight-mode-change crash</changelogtext>
+        <changelogtext>Removed LeakCanary from debug builds</changelogtext>
     </changelogversion>
 
     <changelogversion versionName="4.0.0" changeDate="Oct 9, 2016">

@@ -3,7 +3,7 @@
 Relative to DroidPlanner/Tower 4.0.0. Modifications 2026 by Ramón José Moreno
 and Alejandro Moreno.
 
-## 4.0.1
+## 4.0.2
 
 ### Build system
 
@@ -65,3 +65,5 @@ and Alejandro Moreno.
 - Google Analytics (`play-services-analytics`) removed; the "usage statistics"
   preference removed.
 - Weather Underground widget removed (API discontinued; widget was disabled).
+- LeakCanary removed from debug builds (removed the extra "Leaks" launcher icon
+  and the heap-dump overhead); re-enable with one line in `Android/build.gradle`.

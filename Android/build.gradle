@@ -18,7 +18,7 @@ def versionPrefix = "Tower-v"
 //Decomposed version name and code
 def versionMajor = 4
 def versionMinor = 0
-def versionPatch = 1
+def versionPatch = 2
 def versionBuild = 0
 
 //Logging levels
