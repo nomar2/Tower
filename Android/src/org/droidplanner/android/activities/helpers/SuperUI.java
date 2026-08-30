@@ -389,9 +389,15 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
                 return true;
             }
 
-            case R.id.menu_download_mission:
-                MissionApi.getApi(dpApi).loadWaypoints();
+            case R.id.menu_download_mission: {
+                final MissionProxy missionProxy = dpApp.getMissionProxy();
+                if (missionProxy != null) {
+                    missionProxy.loadWaypointsFromVehicle();
+                } else {
+                    MissionApi.getApi(dpApi).loadWaypoints();
+                }
                 return true;
+            }
 
             case R.id.menu_kill_switch:
                 SlideToUnlockDialog unlockDialog = SlideToUnlockDialog.newInstance("disable vehicle", new Runnable() {

@@ -25,6 +25,8 @@
         <changelogimprovement>Renamed to "Tower GCS"; About screen shows "Tower GCS v4.0.0.2"</changelogimprovement>
         <changelogimprovement>Scoped storage for missions and parameters; app-owned foreground service</changelogimprovement>
         <changelogtext>Removed dead integrations (Baidu Maps, Droneshare upload, Google Analytics, Weather Underground)</changelogtext>
+        <changelogtext>More reliable mission upload/download: faster retry on lost packets, plus an automatic re-try and a clear failure message</changelogtext>
+        <changelogtext>Fixed the editor crash when rotating the screen with the trash tool open</changelogtext>
         <changelogtext>Fixed touch/ANR freeze, connect crashes and flight-mode-change crash</changelogtext>
         <changelogtext>Removed LeakCanary from debug builds</changelogtext>
     </changelogversion>

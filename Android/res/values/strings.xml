@@ -499,6 +499,10 @@
     <string name="mission_upload_title">Mission Upload</string>
     <string name="mission_upload_message">Do you want to append a Takeoff and RTL to your mission?</string>
     <string name="label_skip">Skip</string>
+    <string name="mission_send_retry">Slow link — resending the mission…</string>
+    <string name="mission_send_failed">Could not send the mission. Check the connection and try again.</string>
+    <string name="mission_load_retry">Slow link — requesting the mission again…</string>
+    <string name="mission_load_failed">Could not download the mission. Check the connection and try again.</string>
 
     <!-- Telemetry widget labels -->
     <string name="label_widget_solo_video">Solo Video</string>

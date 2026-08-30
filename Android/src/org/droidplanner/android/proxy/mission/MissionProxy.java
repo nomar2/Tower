@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.collection.CircularArray;
 import android.util.Pair;
@@ -63,18 +65,70 @@ public class MissionProxy implements DPMap.PathSource {
         eventFilter.addAction(AttributeEvent.MISSION_DRONIE_CREATED);
         eventFilter.addAction(AttributeEvent.MISSION_UPDATED);
         eventFilter.addAction(AttributeEvent.MISSION_RECEIVED);
+        eventFilter.addAction(AttributeEvent.MISSION_SENT);
     }
+
+    /**
+     * A mission upload/download that stalls (lost packets on a radio or Wi-Fi
+     * link) produces no event at all from the services layer, so the user just
+     * sees nothing happen. This watchdog retries the transfer once on its own
+     * and, failing that, tells the user the link is the problem. The delay is
+     * longer than the services-side {@code WaypointManager} give-up time.
+     */
+    private static final long TRANSFER_TIMEOUT_MS = 25000L;
+
+    private final Handler transferWatchdog = new Handler(Looper.getMainLooper());
+    private int uploadRetriesLeft;
+    private int downloadRetriesLeft;
+
+    private final Runnable uploadTimeoutCheck = new Runnable() {
+        @Override
+        public void run() {
+            if (drone == null || !drone.isConnected())
+                return;
+
+            if (uploadRetriesLeft-- > 0) {
+                Toast.makeText(context, R.string.mission_send_retry, Toast.LENGTH_SHORT).show();
+                MissionApi.getApi(drone).setMission(generateMission(), true);
+                transferWatchdog.postDelayed(this, TRANSFER_TIMEOUT_MS);
+            } else {
+                Toast.makeText(context, R.string.mission_send_failed, Toast.LENGTH_LONG).show();
+            }
+        }
+    };
+
+    private final Runnable downloadTimeoutCheck = new Runnable() {
+        @Override
+        public void run() {
+            if (drone == null || !drone.isConnected())
+                return;
+
+            if (downloadRetriesLeft-- > 0) {
+                Toast.makeText(context, R.string.mission_load_retry, Toast.LENGTH_SHORT).show();
+                MissionApi.getApi(drone).loadWaypoints();
+                transferWatchdog.postDelayed(this, TRANSFER_TIMEOUT_MS);
+            } else {
+                Toast.makeText(context, R.string.mission_load_failed, Toast.LENGTH_LONG).show();
+            }
+        }
+    };
 
     private final BroadcastReceiver eventReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             switch (action) {
+                case AttributeEvent.MISSION_RECEIVED:
+                    transferWatchdog.removeCallbacks(downloadTimeoutCheck);
+                    // fall through
                 case AttributeEvent.MISSION_DRONIE_CREATED:
                 case AttributeEvent.MISSION_UPDATED:
-                case AttributeEvent.MISSION_RECEIVED:
                     Mission droneMission = drone.getAttribute(AttributeType.MISSION);
                     load(droneMission);
+                    break;
+
+                case AttributeEvent.MISSION_SENT:
+                    transferWatchdog.removeCallbacks(uploadTimeoutCheck);
                     break;
             }
         }
@@ -720,8 +774,26 @@ public class MissionProxy implements DPMap.PathSource {
         return mission;
     }
 
+    /**
+     * Downloads the mission stored on the vehicle, retrying once if the transfer
+     * stalls.
+     */
+    public void loadWaypointsFromVehicle() {
+        if (drone == null || !drone.isConnected())
+            return;
+
+        downloadRetriesLeft = 1;
+        transferWatchdog.removeCallbacks(downloadTimeoutCheck);
+        transferWatchdog.postDelayed(downloadTimeoutCheck, TRANSFER_TIMEOUT_MS);
+        MissionApi.getApi(drone).loadWaypoints();
+    }
+
     public void sendMissionToAPM(Drone drone) {
         MissionApi.getApi(drone).setMission(generateMission(), true);
+
+        uploadRetriesLeft = 1;
+        transferWatchdog.removeCallbacks(uploadTimeoutCheck);
+        transferWatchdog.postDelayed(uploadTimeoutCheck, TRANSFER_TIMEOUT_MS);
 
         int missionItemsCount = missionItemProxies.size();
 

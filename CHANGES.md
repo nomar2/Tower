@@ -43,6 +43,12 @@ and Alejandro Moreno.
   once a v2 frame is received from the peer. MAVLink 1 links are unaffected.
 - Connecting to a real vehicle over **UDP** and **USB serial** was tested and
   works.
+- **Mission transfer reliability**: the bundled `WaypointManager` used a 15 s
+  watchdog with 3 retries, so one lost packet stalled an upload/download for
+  15 s and three misses (45 s) aborted it — uploads and downloads over radio or
+  Wi-Fi regularly needed a manual retry. The watchdog is now 3 s with 6 retries,
+  and the app itself re-issues a stalled transfer once and reports a clear
+  failure if the link is genuinely down.
 
 ### Features
 
