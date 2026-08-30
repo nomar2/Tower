@@ -3,8 +3,12 @@ name: Build APK
 on:
   push:
     branches: [ main ]
+    tags: [ 'v*' ]
   pull_request:
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -37,9 +41,21 @@ jobs:
           ORG_GRADLE_PROJECT_MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
         run: ./gradlew :Android:assembleDevDebug --no-daemon --stacktrace
 
-      - name: Upload APK
+      - name: Rename APK
+        run: |
+          mkdir -p dist
+          cp Android/build/outputs/apk/dev/debug/*.apk "dist/tower-${GITHUB_REF_NAME}-dev-debug.apk"
+
+      - name: Upload APK (workflow artifact)
         uses: actions/upload-artifact@v4
         with:
           name: tower-dev-debug
-          path: Android/build/outputs/apk/dev/debug/*.apk
+          path: dist/*.apk
           if-no-files-found: error
+
+      - name: Attach APK to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.apk
+          generate_release_notes: true
