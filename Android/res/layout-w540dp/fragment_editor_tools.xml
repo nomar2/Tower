@@ -141,6 +141,27 @@
                 android:textAllCaps="true"
                 android:textColor="@android:color/black"
                 android:textStyle="normal"/>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@color/light_grey"/>
+
+            <TextView
+                android:id="@+id/clear_vehicle_mission_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?selectableItemBackground"
+                android:gravity="center"
+                android:minHeight="36dp"
+                android:padding="5dp"
+                android:singleLine="true"
+                android:text="@string/label_clear_vehicle"
+                android:textAllCaps="true"
+                android:textColor="@android:color/black"
+                android:textStyle="normal"/>
         </LinearLayout>
 
         <TextView

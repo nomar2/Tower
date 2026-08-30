@@ -154,7 +154,9 @@ public class EditorToolsFragment extends ApiListenerFragment implements OnClickL
         clearSelected.setOnClickListener(trashToolImpl);
 
         clearVehicleMission = (TextView) view.findViewById(R.id.clear_vehicle_mission_button);
-        clearVehicleMission.setOnClickListener(trashToolImpl);
+        if (clearVehicleMission != null) {
+            clearVehicleMission.setOnClickListener(trashToolImpl);
+        }
 
         final RadioButtonCenter buttonSelector = (RadioButtonCenter) view.findViewById(R.id.editor_tools_selector);
         final SelectorToolsImpl selectorToolImpl = (SelectorToolsImpl) editorToolsImpls[EditorTools.SELECTOR.ordinal()];
