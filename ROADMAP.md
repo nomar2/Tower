@@ -23,9 +23,10 @@ release-signing pipeline.
 
 ## Priority 2 — features
 
-- [ ] **USB 5.8 GHz video (Eachine ROTG etc.)** — replace the dead 2016
-      `libuvccamera` with a maintained arm64 UVC library
-      (`com.herohan:UVCAndroid`) and re-enable the UVC video widget.
+- [x] **USB 5.8 GHz video (Eachine ROTG etc.)** — the dead 2016 `libuvccamera`
+      was replaced with `com.herohan:UVCAndroid` and the UVC widget rebuilt.
+      Verified to build and start without a device; the actual preview needs
+      testing with a real receiver on a USB-OTG phone.
 - [ ] **External Bluetooth / USB GPS** as the follow-me position source (the
       phone GPS is the weak link), plus an in-flight panel to tune the follow
       lead / radius / altitude.

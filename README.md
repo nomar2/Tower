@@ -30,6 +30,9 @@ and improvements.
 - **Scoped storage** — missions and parameters are stored in the app's own
   external files directory; no storage permission required.
 - **"Reboot flight controller"** action in the connected menu (slide-to-confirm).
+- **USB video (UVC) widget rebuilt** on a maintained 64-bit library — live
+  preview from an Eachine ROTG / Skydroid 5.8 GHz FPV receiver over USB-OTG.
+  Off by default; enable it from the widget list.
 - **Dead integrations removed** — Baidu Maps, the Droneshare upload service and
   account UI, Google Analytics, and the Weather Underground widget. The local
   telemetry-log (TLog) viewer is kept.
@@ -75,6 +78,8 @@ builds the release `org.droidplanner.android`.
   remain in the APK).
 - The improved follow-me is verified at the command-stream level; the flight
   tuning constants may still need adjusting against a real vehicle.
+- The USB video (UVC) widget builds and starts cleanly; the live preview has
+  only been tested without a device — try it with a real receiver.
 
 Planned work is tracked in [`ROADMAP.md`](ROADMAP.md).
 

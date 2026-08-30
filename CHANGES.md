@@ -44,6 +44,11 @@ and Alejandro Moreno.
 
 - **Reboot flight controller** — menu action (shown when connected), confirmed
   with a slide-to-unlock, sends `MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN`.
+- **USB video (UVC) widget rebuilt** — the dead 2016 `libuvccamera` (32-bit only)
+  was replaced with the maintained `com.herohan:UVCAndroid` (arm64 + all ABIs).
+  The widget shows a live preview from a USB Video Class receiver such as an
+  Eachine ROTG / Skydroid 5.8 GHz FPV dongle. Off by default; enable it from the
+  widget list. Adds native libraries back to the APK (~2 MB).
 - **Improved GUIDED follow-me**:
   - alpha/beta filter over the operator's position and ground velocity;
   - setpoints streamed at 5 Hz with dead-reckoning between GPS fixes
