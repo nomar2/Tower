@@ -171,8 +171,6 @@ public class DroidPlannerApp extends MultiDexApplication implements DroneListene
     }
 
     private void initLoggingAndAnalytics(){
-        //LeakCanary 2.x auto-installs via its content provider; no explicit install needed.
-
         final Context context = getApplicationContext();
 
         final Thread.UncaughtExceptionHandler dpExceptionHandler = new Thread.UncaughtExceptionHandler() {

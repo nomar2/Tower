@@ -210,8 +210,9 @@ dependencies {
     //Charts and graph library
     implementation 'com.github.lecho:hellocharts-library:1.5.5@aar'
 
-    //Leak canary
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.13'
+    // Memory-leak detector for local development only. Off by default because it
+    // adds a "Leaks" launcher icon and heap-dump overhead to debug builds.
+    // Re-enable with: debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.13'
 }
 
 /* ---- signing helpers ---- */
