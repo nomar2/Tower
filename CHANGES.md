@@ -3,7 +3,12 @@
 Relative to DroidPlanner/Tower 4.0.0. Modifications 2026 by Ramón José Moreno
 and Alejandro Moreno.
 
-## 4.0.2
+## 4.0.0.2
+
+### App identity
+
+- The app is presented as **Tower GCS**; the About screen shows
+  `Tower GCS v4.0.0.2`.
 
 ### Build system
 
@@ -43,6 +48,11 @@ and Alejandro Moreno.
 
 - **Reboot flight controller** — menu action (shown when connected), confirmed
   with a slide-to-unlock, sends `MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN`.
+- **Clear vehicle mission** — third option in the editor trash tool; erases the
+  mission stored on the flight controller (`MISSION_CLEAR_ALL`), enabled only
+  while a vehicle is connected and confirmed with a dialog.
+- **Shut down & exit** — overflow-menu action that disconnects from the vehicle,
+  closes every screen and stops the background service.
 - **Improved GUIDED follow-me**:
   - alpha/beta filter over the operator's position and ground velocity;
   - setpoints streamed at 5 Hz with dead-reckoning between GPS fixes

@@ -21,8 +21,8 @@ def displayName = "Tower GCS"
 //Decomposed version name and code
 def versionMajor = 4
 def versionMinor = 0
-def versionPatch = 2
-def versionBuild = 0
+def versionPatch = 0
+def versionBuild = 2
 
 //Logging levels
 def logLevelVerbose = 2
@@ -52,7 +52,7 @@ android {
 
         manifestPlaceholders = [mapsApiKey: getMapsApiKey()]
 
-        resValue "string", "app_display_version", "${displayName} v${versionMajor}.${versionMinor}.${versionPatch}"
+        resValue "string", "app_display_version", "${displayName} v${versionMajor}.${versionMinor}.${versionPatch}.${versionBuild}"
     }
 
     compileOptions {
