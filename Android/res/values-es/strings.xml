@@ -161,6 +161,11 @@
 
     <string name="dlg_clear_mission_title">Borrar misión</string>
     <string name="dlg_clear_mission_confirm">¿Borrar todos los waypoint del mapa?</string>
+    <string name="label_clear_vehicle">Dron</string>
+    <string name="dlg_clear_vehicle_title">Borrar misión del dron</string>
+    <string name="dlg_clear_vehicle_confirm">¿Borrar la misión guardada en la controladora del dron?</string>
+    <string name="clear_vehicle_mission_sent">Orden de borrado enviada al dron</string>
+    <string name="clear_vehicle_not_connected">Conecta primero con un dron</string>
 
     <!-- Selection of map style -->
     <string name="menu_map_type_satellite">Satélite</string>

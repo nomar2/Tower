@@ -2,6 +2,12 @@ package org.droidplanner.android.fragments.account.editor.tool;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.Toast;
+
+import com.MAVLink.common.msg_mission_clear_all;
+import com.o3dr.android.client.Drone;
+import com.o3dr.android.client.apis.ExperimentalApi;
+import com.o3dr.services.android.lib.mavlink.MavlinkMessageWrapper;
 
 import org.droidplanner.android.R;
 import org.droidplanner.android.dialogs.SupportYesNoDialog;
@@ -16,6 +22,7 @@ class TrashToolsImpl extends EditorToolsImpl implements View.OnClickListener {
 
     private static final String CLEAR_SELECTED_DIALOG_TAG = "clearSelectedWaypoints";
     private static final String CLEAR_MISSION_DIALOG_TAG = "clearMission";
+    private static final String CLEAR_VEHICLE_DIALOG_TAG = "clearVehicleMission";
 
     TrashToolsImpl(EditorToolsFragment fragment) {
         super(fragment);
@@ -60,6 +67,15 @@ class TrashToolsImpl extends EditorToolsImpl implements View.OnClickListener {
             final List<MissionItemProxy> missionItems = missionProxy.getItems();
             editorToolsFragment.clearMission.setEnabled(!missionItems.isEmpty());
         }
+
+        if (editorToolsFragment.clearVehicleMission != null) {
+            editorToolsFragment.clearVehicleMission.setEnabled(isDroneConnected());
+        }
+    }
+
+    private boolean isDroneConnected() {
+        final Drone drone = missionProxy == null ? null : missionProxy.getDrone();
+        return drone != null && drone.isConnected();
     }
 
     private void doClearMissionConfirmation() {
@@ -88,6 +104,55 @@ class TrashToolsImpl extends EditorToolsImpl implements View.OnClickListener {
         }
     }
 
+    private void doClearVehicleMissionConfirmation() {
+        final Context context = editorToolsFragment.getContext();
+        if (context == null)
+            return;
+
+        if (!isDroneConnected()) {
+            Toast.makeText(context, R.string.clear_vehicle_not_connected, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        SupportYesNoDialog ynd = SupportYesNoDialog.newInstance(context, CLEAR_VEHICLE_DIALOG_TAG,
+                context.getString(R.string.dlg_clear_vehicle_title),
+                context.getString(R.string.dlg_clear_vehicle_confirm));
+
+        if (ynd != null) {
+            ynd.show(editorToolsFragment.getChildFragmentManager(), CLEAR_VEHICLE_DIALOG_TAG);
+        }
+    }
+
+    /**
+     * Erases the mission stored on the flight controller with a raw
+     * MISSION_CLEAR_ALL (dronekit-android has no dedicated action for it).
+     */
+    private void clearVehicleMission() {
+        final Drone drone = missionProxy == null ? null : missionProxy.getDrone();
+        final Context context = editorToolsFragment.getContext();
+        if (drone == null || !drone.isConnected()) {
+            if (context != null) {
+                Toast.makeText(context, R.string.clear_vehicle_not_connected, Toast.LENGTH_LONG).show();
+            }
+            return;
+        }
+
+        final msg_mission_clear_all msg = new msg_mission_clear_all();
+        msg.target_system = 1;
+        msg.target_component = 1;
+
+        try {
+            ExperimentalApi.getApi(drone).sendMavlinkMessage(new MavlinkMessageWrapper(msg));
+            if (context != null) {
+                Toast.makeText(context, R.string.clear_vehicle_mission_sent, Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            if (context != null) {
+                Toast.makeText(context, R.string.dlg_clear_vehicle_title, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
     @Override
     public void onDialogYes(String dialogTag) {
         switch (dialogTag) {
@@ -104,6 +169,10 @@ class TrashToolsImpl extends EditorToolsImpl implements View.OnClickListener {
                     missionProxy.clear();
                     editorToolsFragment.setTool(EditorToolsFragment.EditorTools.NONE);
                 }
+                break;
+
+            case CLEAR_VEHICLE_DIALOG_TAG:
+                clearVehicleMission();
                 break;
         }
     }
@@ -128,6 +197,10 @@ class TrashToolsImpl extends EditorToolsImpl implements View.OnClickListener {
 
             case R.id.clear_selected_button:
                 deleteSelectedItems();
+                break;
+
+            case R.id.clear_vehicle_mission_button:
+                doClearVehicleMissionConfirmation();
                 break;
         }
     }
