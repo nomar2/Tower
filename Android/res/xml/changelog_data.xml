@@ -27,6 +27,7 @@
         <changelogtext>Removed dead integrations (Baidu Maps, Droneshare upload, Google Analytics, Weather Underground)</changelogtext>
         <changelogtext>More reliable mission upload/download: faster retry on lost packets, plus an automatic re-try and a clear failure message</changelogtext>
         <changelogtext>Fixed the editor crash when rotating the screen with the trash tool open</changelogtext>
+        <changelogtext>Fixed the connection bar being hidden behind the navigation bar on Android 15/16</changelogtext>
         <changelogtext>Fixed touch/ANR freeze, connect crashes and flight-mode-change crash</changelogtext>
         <changelogtext>Removed LeakCanary from debug builds</changelogtext>
     </changelogversion>

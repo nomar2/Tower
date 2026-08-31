@@ -36,6 +36,10 @@ and Alejandro Moreno.
 - `AppService` is now a proper foreground service tied to the vehicle connection.
 - Scoped storage: missions/parameters stored under the app's external files dir;
   storage permissions removed; `content://` missions copied in before loading.
+- Edge-to-edge (forced by `targetSdk 35`): the theme opts out on Android 15, and
+  the sliding flight-action panel and the editor's bottom bar are padded by the
+  navigation-bar inset on Android 16, so the connection bar is no longer hidden
+  behind the system navigation bar.
 
 ### Connection / MAVLink
 
