@@ -51,7 +51,7 @@ and Alejandro Moreno.
   once a v2 frame is received from the peer. MAVLink 1 links are unaffected.
 - Connecting to a real vehicle over **UDP** and **USB serial** was tested and
   works.
-- **Flown on hardware** — a MINI Pix running ArduCopter 4.7.0, over a 433 MHz
+- **Flown on hardware** — a MINI Pix running ArduCopter 4.7.0, over a 433 MHz SiK
   telemetry radio, over Wi-Fi and over TCP and UDP links, with MAVLink 1 and
   MAVLink 2: connection and telemetry, flight-mode changes, arm, takeoff, mission
   edit / upload / download / run, parameter read-write, reboot, and clearing the

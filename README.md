@@ -101,7 +101,7 @@ CI signs the release automatically if the repository has the secrets
 
 ## Hardware testing
 
-Flown against a **MINI Pix running ArduCopter 4.7.0**, over a **433 MHz
+Flown against a **MINI Pix running ArduCopter 4.7.0**, over a **433 MHz SiK
 telemetry radio**, **Wi-Fi**, and **TCP** and **UDP** links, with MAVLink 1 and
 MAVLink 2. Confirmed working:
 
