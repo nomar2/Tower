@@ -102,8 +102,9 @@ CI signs the release automatically if the repository has the secrets
 ## Hardware testing
 
 Flown against a **MINI Pix running ArduCopter 4.7.0**, over a **433 MHz SiK
-telemetry radio**, **Wi-Fi**, and **TCP** and **UDP** links, with MAVLink 1 and
-MAVLink 2. Confirmed working:
+telemetry radio on USB serial** (OTG cable to the ground radio), over **Wi-Fi**,
+and over **TCP** and **UDP** links, with MAVLink 1 and MAVLink 2. Confirmed
+working:
 
 - Connection and live telemetry on both links and both protocol versions
 - Flight-mode changes, arming, takeoff
@@ -116,9 +117,9 @@ MAVLink 2. Confirmed working:
 Tested on phones from **Android 10 to Android 16** (a TCP connection on Android 10
 works fine).
 
-Not yet exercised on hardware: follow-me, the dronie, USB-direct serial and
-Bluetooth connections, and the sensor-calibration screens (compass /
-accelerometer / radio / ESC).
+Not yet exercised on hardware: follow-me, the dronie, Bluetooth telemetry
+adapters, and the sensor-calibration screens (compass / accelerometer /
+radio / ESC).
 
 ## Known limitations
 
