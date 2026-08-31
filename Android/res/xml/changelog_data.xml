@@ -16,7 +16,7 @@
     -->
 
     <changelogversion versionName="4.0.0.2" changeDate="Aug 31, 2026">
-        <changelogimprovement>Updated to build and run on current Android (targetSdk 34, AndroidX, Gradle 8)</changelogimprovement>
+        <changelogimprovement>Updated to build and run on current Android (targetSdk 35, AndroidX, Gradle 8)</changelogimprovement>
         <changelogimprovement>MAVLink 2 protocol support (auto-negotiated)</changelogimprovement>
         <changelogimprovement>Reworked GUIDED follow-me: smoothed position + velocity setpoints at 5 Hz, lead prediction</changelogimprovement>
         <changelogimprovement>"Reboot flight controller" action added to the connected menu</changelogimprovement>
