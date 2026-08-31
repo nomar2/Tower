@@ -51,6 +51,10 @@ and Alejandro Moreno.
   failure if the link is genuinely down.
 - **Mission transfer progress**: uploading, downloading and clearing the
   vehicle mission now show a progress dialog for the duration of the transfer.
+- **Dronie feedback**: pressing "Dronie" without a GPS fix now shows a message
+  instead of silently doing nothing, the dronie upload gets the same progress
+  bar and stall-retry as a normal upload, and the confirmation text spells out
+  that the dronie is only uploaded (arm and switch to Auto to fly it).
 
 ### Features
 

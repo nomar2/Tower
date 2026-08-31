@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +55,28 @@ public class CopterFlightControlFragment extends BaseFlightControlFragment imple
         eventFilter.addAction(AttributeEvent.FOLLOW_STOP);
         eventFilter.addAction(AttributeEvent.FOLLOW_UPDATE);
         eventFilter.addAction(AttributeEvent.MISSION_DRONIE_CREATED);
+        eventFilter.addAction(AttributeEvent.WARNING_NO_GPS);
     }
+
+    /**
+     * "Dronie" only produces a result event ({@code MISSION_DRONIE_CREATED}) on
+     * success; if the vehicle has no GPS fix the services layer just emits
+     * {@code WARNING_NO_GPS} and nothing is uploaded, so without this the button
+     * looks dead. We remember that a dronie was asked for and turn the next
+     * outcome into a visible message.
+     */
+    private boolean dronieRequested;
+    private final Handler dronieHandler = new Handler(Looper.getMainLooper());
+    private final Runnable dronieTimeout = new Runnable() {
+        @Override
+        public void run() {
+            if (dronieRequested) {
+                dronieRequested = false;
+                if (isAdded())
+                    Toast.makeText(getActivity(), R.string.dronie_no_response, Toast.LENGTH_LONG).show();
+            }
+        }
+    };
 
     private final BroadcastReceiver eventReceiver = new BroadcastReceiver() {
         @Override
@@ -118,10 +141,23 @@ public class CopterFlightControlFragment extends BaseFlightControlFragment imple
                     //Get the bearing of the dronie mission.
                     float bearing = intent.getFloatExtra(AttributeEventExtra.EXTRA_MISSION_DRONIE_BEARING, -1);
                     if (bearing >= 0) {
+                        dronieRequested = false;
+                        dronieHandler.removeCallbacks(dronieTimeout);
+                        if (missionProxy != null)
+                            missionProxy.onExternalUploadStarted();
+
                         final FlightControlManagerFragment parent = (FlightControlManagerFragment) getParentFragment();
                         if (parent != null) {
                             parent.updateMapBearing(bearing);
                         }
+                    }
+                    break;
+
+                case AttributeEvent.WARNING_NO_GPS:
+                    if (dronieRequested) {
+                        dronieRequested = false;
+                        dronieHandler.removeCallbacks(dronieTimeout);
+                        Toast.makeText(getActivity(), R.string.dronie_needs_gps, Toast.LENGTH_LONG).show();
                     }
                     break;
             }
@@ -209,6 +245,8 @@ public class CopterFlightControlFragment extends BaseFlightControlFragment imple
     public void onApiDisconnected() {
         super.onApiDisconnected();
         getBroadcastManager().unregisterReceiver(eventReceiver);
+        dronieHandler.removeCallbacks(dronieTimeout);
+        dronieRequested = false;
     }
 
     @Override
@@ -451,6 +489,9 @@ public class CopterFlightControlFragment extends BaseFlightControlFragment imple
     public void onDialogYes(String dialogTag) {
         switch (dialogTag) {
             case DRONIE_CREATION_DIALOG_TAG:
+                dronieRequested = true;
+                dronieHandler.removeCallbacks(dronieTimeout);
+                dronieHandler.postDelayed(dronieTimeout, 8000L);
                 missionProxy.makeAndUploadDronie(getDrone());
                 break;
         }

@@ -381,7 +381,9 @@
     <string name="pref_dialog_entry_ask">Preguntar</string>
     <string name="pref_dialog_selection_reset_desc"><![CDATA[Resetea la selección en: Ajustes ––> Otros -> Preferencias de los diálogos]]></string>
     <string name="pref_dronie_creation_title">Crear dronie?</string>
-    <string name="pref_dronie_creation_message">Por favor situese 8 metros por detrás antes de comenzar el dronie.</string>
+    <string name="pref_dronie_creation_message">Sitúate 8 m por detrás antes de comenzar el dronie. Se sube al dron: arma y cambia a Auto para volarlo.</string>
+    <string name="dronie_needs_gps">El dronie necesita señal GPS (6+ satélites).</string>
+    <string name="dronie_no_response">Dronie: el dron no responde. Revisa la conexión.</string>
     <string name="upload_params">Subir parámetros</string>
     <string name="upload">Cargar</string>
     <string name="download_params">Descargar parámetros</string>

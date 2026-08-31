@@ -988,6 +988,18 @@ public class MissionProxy implements DPMap.PathSource {
         MissionApi.getApi(drone).generateDronie();
     }
 
+    /**
+     * Attaches the transfer progress indicator and stall-retry to an upload that
+     * was kicked off outside {@link #sendMissionToAPM(Drone)} — currently the
+     * dronie, whose mission is built and pushed inside the services layer.
+     */
+    public void onExternalUploadStarted() {
+        beginTransfer(TRANSFER_UPLOAD);
+        uploadRetriesLeft = 1;
+        transferWatchdog.removeCallbacks(uploadTimeoutCheck);
+        transferWatchdog.postDelayed(uploadTimeoutCheck, TRANSFER_TIMEOUT_MS);
+    }
+
     public List<List<LatLong>> getPolygonsPath() {
         ArrayList<List<LatLong>> polygonPaths = new ArrayList<List<LatLong>>();
         for (MissionItemProxy itemProxy : missionItemProxies) {
