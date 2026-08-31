@@ -146,6 +146,7 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
     @Override
     public void setContentView(int resId){
         super.setContentView(resId);
+        applySystemBarInsets();
 
         final int toolbarId = getToolbarId();
         final Toolbar toolbar = (Toolbar) findViewById(toolbarId);
@@ -155,6 +156,7 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
     @Override
     public void setContentView(View view){
         super.setContentView(view);
+        applySystemBarInsets();
 
         final int toolbarId = getToolbarId();
         final Toolbar toolbar = (Toolbar) findViewById(toolbarId);
@@ -212,6 +214,29 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
     }
 
     protected abstract int getToolbarId();
+
+    /**
+     * targetSdk 35+ is drawn edge-to-edge. This 2016 layout set already keeps its
+     * top toolbar clear of the status bar (per-view {@code fitsSystemWindows}),
+     * but the bottom connection / action bars are drawn under the navigation bar
+     * (3-button or gesture) and the side bars in landscape. Pad the content root
+     * by those insets; the status-bar (top) inset is left to the existing views.
+     */
+    private void applySystemBarInsets() {
+        final View content = findViewById(android.R.id.content);
+        if (content == null)
+            return;
+
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(getWindow().getDecorView(),
+                (v, windowInsets) -> {
+                    final androidx.core.graphics.Insets bars = windowInsets.getInsets(
+                            androidx.core.view.WindowInsetsCompat.Type.systemBars()
+                                    | androidx.core.view.WindowInsetsCompat.Type.displayCutout());
+                    content.setPadding(bars.left, content.getPaddingTop(), bars.right, bars.bottom);
+                    return windowInsets;
+                });
+        androidx.core.view.ViewCompat.requestApplyInsets(content);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
