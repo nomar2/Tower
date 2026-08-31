@@ -39,7 +39,7 @@ android {
     defaultConfig {
         applicationId 'org.droidplanner.android'
         minSdkVersion 24
-        targetSdkVersion 34
+        targetSdkVersion 35
         versionCode computeVersionCode(versionMajor, versionMinor, versionPatch, versionBuild)
         versionName generateVersionName(versionPrefix, versionMajor, versionMinor, versionPatch)
 
@@ -89,12 +89,12 @@ android {
 
     signingConfigs {
         release {
-            def ksFile = getAppKeystoreFile()
-            if (ksFile != null) {
-                storeFile ksFile
-                storePassword getAppKeystorePassword()
-                keyAlias getAppKey()
-                keyPassword getAppKeyPassword()
+            def p = releaseSigningProps()
+            if (p != null && file(p.getProperty('storeFile')).exists()) {
+                storeFile file(p.getProperty('storeFile'))
+                storePassword p.getProperty('storePassword')
+                keyAlias p.getProperty('keyAlias')
+                keyPassword p.getProperty('keyPassword')
             }
         }
     }
@@ -133,7 +133,7 @@ android {
 
         release {
             minifyEnabled false
-            signingConfig getAppKeystoreFile() != null ? signingConfigs.release : signingConfigs.debug
+            signingConfig hasReleaseSigning() ? signingConfigs.release : signingConfigs.debug
             buildConfigField "boolean", "ENABLE_CRASHLYTICS", "false"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard.cfg'
         }
@@ -220,21 +220,39 @@ dependencies {
     // Re-enable with: debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.13'
 }
 
-/* ---- signing helpers ---- */
+/* ---- release signing ----
+ *
+ * Put a keystore.properties in the project root (it is gitignored):
+ *
+ *   storeFile=C:/keys/tower-release.jks
+ *   storePassword=********
+ *   keyAlias=tower
+ *   keyPassword=********
+ *
+ * CI passes the same values as Gradle properties instead:
+ *   -PRELEASE_STORE_FILE=... -PRELEASE_STORE_PASSWORD=...
+ *   -PRELEASE_KEY_ALIAS=...  -PRELEASE_KEY_PASSWORD=...
+ *
+ * If nothing is configured the release build falls back to the debug key so the
+ * build still succeeds — a debug-signed APK must not be distributed.
+ */
+def releaseSigningProps() {
+    def props = new Properties()
+    def f = rootProject.file('keystore.properties')
+    if (f.exists()) f.withInputStream { props.load(it) }
 
-def getAppKeystoreFile() {
-    def filePath = hasProperty('ORG_DROIDPLANNER_ANDROID_KEYSTORE') ? ORG_DROIDPLANNER_ANDROID_KEYSTORE : null
-    return filePath ? file(filePath) : null
+    [RELEASE_STORE_FILE    : 'storeFile',
+     RELEASE_STORE_PASSWORD: 'storePassword',
+     RELEASE_KEY_ALIAS     : 'keyAlias',
+     RELEASE_KEY_PASSWORD  : 'keyPassword'].each { gradleProp, key ->
+        if (project.hasProperty(gradleProp)) {
+            props.setProperty(key, project.property(gradleProp).toString())
+        }
+    }
+    return props.getProperty('storeFile') ? props : null
 }
 
-def getAppKeystorePassword() {
-    return hasProperty('ORG_DROIDPLANNER_ANDROID_KEYSTORE_PWD') ? ORG_DROIDPLANNER_ANDROID_KEYSTORE_PWD : ''
-}
-
-def getAppKeyPassword() {
-    return hasProperty('ORG_DROIDPLANNER_ANDROID_KEY_PWD') ? ORG_DROIDPLANNER_ANDROID_KEY_PWD : ''
-}
-
-def getAppKey() {
-    return hasProperty('ORG_DROIDPLANNER_ANDROID_KEY_ALIAS') ? ORG_DROIDPLANNER_ANDROID_KEY_ALIAS : ''
+def hasReleaseSigning() {
+    def p = releaseSigningProps()
+    return p != null && file(p.getProperty('storeFile')).exists()
 }

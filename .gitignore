@@ -21,6 +21,11 @@ Android/build/
 # Local configuration (SDK path, API keys) - never commit
 local.properties
 
+# Release signing - never commit
+keystore.properties
+*.jks
+*.keystore
+
 # IDE
 *.iml
 .idea/

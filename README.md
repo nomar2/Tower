@@ -65,6 +65,40 @@ Requirements: JDK 17+, Android SDK with platform 34/36 and recent build-tools.
 The `dev` flavor builds `org.droidplanner.android.debug`; the `prod` flavor
 builds the release `org.droidplanner.android`.
 
+### Release build
+
+`./gradlew :Android:assembleDevDebug` produces a debug APK. For a real
+(smaller, no debug logging) build you want a **signed** release, so that
+updates install over a previous version without uninstalling.
+
+1. Create a signing key once and keep the `.jks` file and its passwords backed
+   up somewhere safe — losing them means you can never update the same app id
+   again without a full uninstall:
+
+   ```
+   keytool -genkeypair -v -keystore tower-release.jks -alias tower \
+     -keyalg RSA -keysize 4096 -validity 10000
+   ```
+
+2. Copy [`keystore.properties.example`](keystore.properties.example) to
+   `keystore.properties` (repo root, gitignored) and fill in `storeFile`,
+   `storePassword`, `keyAlias`, `keyPassword`.
+
+3. Build:
+
+   ```
+   ./gradlew :Android:assembleProdRelease
+   ```
+
+   Output: `Android/build/outputs/apk/prod/release/`.
+
+Without `keystore.properties` the release build still succeeds but is signed
+with the debug key — fine for a quick test, not for distribution.
+
+CI signs the release automatically if the repository has the secrets
+`RELEASE_KEYSTORE_BASE64` (`base64 -w0 tower-release.jks`),
+`RELEASE_STORE_PASSWORD`, `RELEASE_KEY_ALIAS` and `RELEASE_KEY_PASSWORD`.
+
 ## Notes / known limitations
 
 - Connectivity has been tested on real hardware over **UDP** and **USB serial**

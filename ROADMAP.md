@@ -11,11 +11,12 @@ release-signing pipeline.
 - [ ] Re-check **Bluetooth** (SiK-style radios).
 - [ ] **In-flight validation** — arm / takeoff / mode changes / mission run /
       follow-me on a real vehicle, end to end.
-- [ ] **Signed release build** — add a `signingConfig`, produce and test a
-      release APK. Optionally enable R8/minify with `-keep` rules (the
-      reflection-based `ExperimentalApi.sendMavlinkMessage` path must be kept).
-- [ ] **targetSdk 34 → 35** — required by Google Play for new uploads; should be
-      near-direct since no native libraries remain in the APK.
+- [x] **Signed release build** — `keystore.properties` (or CI secrets) drives a
+      `signingConfig`; `./gradlew :Android:assembleProdRelease` produces the
+      APK. R8/minify still off (optional; the reflection-based
+      `ExperimentalApi.sendMavlinkMessage` path would need `-keep` rules).
+- [x] **targetSdk 34 → 35** — done; no native libraries in the APK so it was
+      near-direct.
 - [ ] **Vehicle setup / calibration** — the compass / accelerometer / radio /
       ESC screens send MAVLink and are currently untested.
 - [x] **CI** — GitHub Actions builds the debug APK on every push

@@ -14,11 +14,15 @@ and Alejandro Moreno.
 
 - Gradle wrapper 8.7, Android Gradle Plugin 8.5.2, Kotlin 1.9.24, Java 17.
 - `android.support.*` migrated to AndroidX (+ Jetifier for legacy dependencies).
-- `compileSdk 36`, `minSdk 24`, `targetSdk 34`; namespace-based manifest.
+- `compileSdk 36`, `minSdk 24`, `targetSdk 35`; namespace-based manifest.
 - Removed Fabric/Crashlytics and the dead jcenter/bintray/3DR repositories.
 - Baidu Maps SDK removed entirely (SDK, native libs, map provider, preferences).
 - Google Maps key read from `local.properties` (`MAPS_API_KEY`) via a manifest
   placeholder.
+- Release signing via a gitignored `keystore.properties` (or CI secrets);
+  `./gradlew :Android:assembleProdRelease` produces a ~25% smaller APK with the
+  file logging compiled out. A stable key lets updates install over a previous
+  version without uninstalling.
 
 ### Android 8-16 runtime
 
