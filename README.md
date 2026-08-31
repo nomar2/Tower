@@ -101,8 +101,9 @@ CI signs the release automatically if the repository has the secrets
 
 ## Hardware testing
 
-Flown against a **MINI Pix running ArduCopter 4.7.0**, over both a **433 MHz
-telemetry radio** and **Wi-Fi**, with MAVLink 1 and MAVLink 2. Confirmed working:
+Flown against a **MINI Pix running ArduCopter 4.7.0**, over a **433 MHz
+telemetry radio**, **Wi-Fi** and a **TCP** link, with MAVLink 1 and MAVLink 2.
+Confirmed working:
 
 - Connection and live telemetry on both links and both protocol versions
 - Flight-mode changes, arming, takeoff
