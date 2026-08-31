@@ -46,6 +46,8 @@ public class GenericActionsFragment extends BaseFlightControlFragment {
 
         final int savedConnectionType = prefs.getConnectionParameterType();
 
+        padBottomBarContent(view.findViewById(R.id.mc_disconnected_buttons));
+
         View connectBtn = view.findViewById(R.id.mc_connectBtn);
         connectBtn.setOnClickListener(this);
 

@@ -146,7 +146,6 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
     @Override
     public void setContentView(int resId){
         super.setContentView(resId);
-        applySystemBarInsets();
 
         final int toolbarId = getToolbarId();
         final Toolbar toolbar = (Toolbar) findViewById(toolbarId);
@@ -156,11 +155,36 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
     @Override
     public void setContentView(View view){
         super.setContentView(view);
-        applySystemBarInsets();
 
         final int toolbarId = getToolbarId();
         final Toolbar toolbar = (Toolbar) findViewById(toolbarId);
         initToolbar(toolbar);
+    }
+
+    /**
+     * targetSdk 35+ draws edge-to-edge. Full-screen content (the map) is meant to
+     * run under the system bars, but bars pinned to an edge — the bottom
+     * connection / flight-action bar, the editor tool bar — must not be drawn
+     * under the navigation bar. Pass such a view here (or its container) and it
+     * gets padded by the navigation-bar / side insets, keeping its background
+     * bleeding to the edge while its content stays clear.
+     */
+    public static void padForBottomSystemBars(final View view) {
+        if (view == null)
+            return;
+
+        final int left = view.getPaddingLeft();
+        final int top = view.getPaddingTop();
+        final int right = view.getPaddingRight();
+        final int bottom = view.getPaddingBottom();
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(view, (v, windowInsets) -> {
+            final androidx.core.graphics.Insets bars = windowInsets.getInsets(
+                    androidx.core.view.WindowInsetsCompat.Type.systemBars()
+                            | androidx.core.view.WindowInsetsCompat.Type.displayCutout());
+            v.setPadding(left + bars.left, top, right + bars.right, bottom + bars.bottom);
+            return windowInsets;
+        });
+        androidx.core.view.ViewCompat.requestApplyInsets(view);
     }
 
     protected void initToolbar(Toolbar toolbar){
@@ -214,29 +238,6 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
     }
 
     protected abstract int getToolbarId();
-
-    /**
-     * targetSdk 35+ is drawn edge-to-edge. This 2016 layout set already keeps its
-     * top toolbar clear of the status bar (per-view {@code fitsSystemWindows}),
-     * but the bottom connection / action bars are drawn under the navigation bar
-     * (3-button or gesture) and the side bars in landscape. Pad the content root
-     * by those insets; the status-bar (top) inset is left to the existing views.
-     */
-    private void applySystemBarInsets() {
-        final View content = findViewById(android.R.id.content);
-        if (content == null)
-            return;
-
-        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(getWindow().getDecorView(),
-                (v, windowInsets) -> {
-                    final androidx.core.graphics.Insets bars = windowInsets.getInsets(
-                            androidx.core.view.WindowInsetsCompat.Type.systemBars()
-                                    | androidx.core.view.WindowInsetsCompat.Type.displayCutout());
-                    content.setPadding(bars.left, content.getPaddingTop(), bars.right, bars.bottom);
-                    return windowInsets;
-                });
-        androidx.core.view.ViewCompat.requestApplyInsets(content);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

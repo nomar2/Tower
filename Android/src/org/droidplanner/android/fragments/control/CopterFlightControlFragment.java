@@ -195,6 +195,13 @@ public class CopterFlightControlFragment extends BaseFlightControlFragment imple
         mArmedButtons = view.findViewById(R.id.mc_armed_buttons);
         mInFlightButtons = view.findViewById(R.id.mc_in_flight_buttons);
 
+        // targetSdk 35+ is edge-to-edge: extend each bottom bar's background under
+        // the navigation bar while its buttons stay clear of it.
+        padBottomBarContent(mDisconnectedButtons);
+        padBottomBarContent(mDisarmedButtons);
+        padBottomBarContent(mArmedButtons);
+        padBottomBarContent(mInFlightButtons);
+
         final View connectBtn = view.findViewById(R.id.mc_connectBtn);
         connectBtn.setOnClickListener(this);
 

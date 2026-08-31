@@ -495,6 +495,10 @@ public class EditorActivity extends DrawerNavigationUI implements OnPathFinished
             editorListFragment = new EditorListFragment();
             fragmentManager.beginTransaction().add(toolbarId, editorListFragment).commit();
         }
+
+        // The editor pins its toolbar + waypoint list to the bottom; keep it
+        // above the navigation bar on edge-to-edge (targetSdk 35+).
+        org.droidplanner.android.activities.helpers.SuperUI.padForBottomSystemBars(findViewById(toolbarId));
     }
 
     private void showItemDetail(MissionDetailFragment itemDetail) {
