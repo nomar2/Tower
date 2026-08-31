@@ -11,7 +11,7 @@ and improvements.
 ## What's different in this fork
 
 - **Toolchain modernised** — Gradle 8, Android Gradle Plugin 8, Kotlin 1.9,
-  Java 17, AndroidX, `compileSdk 36`, `minSdk 24`, `targetSdk 34`. Builds an
+  Java 17, AndroidX, `compileSdk 36`, `minSdk 24`, `targetSdk 35`. Builds an
   ABI-universal APK.
 - **Runtime fixes for Android 8-16** — notification channels, `FLAG_IMMUTABLE`
   / `FLAG_MUTABLE` pending intents, `RECEIVER_NOT_EXPORTED`, foreground-service
@@ -99,16 +99,29 @@ CI signs the release automatically if the repository has the secrets
 `RELEASE_KEYSTORE_BASE64` (`base64 -w0 tower-release.jks`),
 `RELEASE_STORE_PASSWORD`, `RELEASE_KEY_ALIAS` and `RELEASE_KEY_PASSWORD`.
 
-## Notes / known limitations
+## Hardware testing
 
-- Connectivity has been tested on real hardware over **UDP** and **USB serial**
-  and works; Bluetooth (SiK-style radios) has not been re-checked yet.
+Flown against a **MINI Pix running ArduCopter 4.7.0**, over both a **433 MHz
+telemetry radio** and **Wi-Fi**, with MAVLink 1 and MAVLink 2. Confirmed working:
+
+- Connection and live telemetry on both links and both protocol versions
+- Flight-mode changes, arming, takeoff
+- Missions — editing, upload, download, and running the mission
+- Reboot flight controller
+- Clear the mission stored on the vehicle
+- Reading and writing parameters
+- Shutting the app down cleanly
+
+Not yet exercised on hardware: follow-me, the dronie, USB-direct and Bluetooth
+connections, and the sensor-calibration screens (compass / accelerometer /
+radio / ESC).
+
+## Known limitations
+
 - MAVLink 2 message signing: received signed frames are parsed (signature
   ignored); outgoing frames are not signed.
-- `targetSdk` is 34; moving to 35/36 is straightforward (no native libraries
-  remain in the APK).
-- The improved follow-me is verified at the command-stream level; the flight
-  tuning constants may still need adjusting against a real vehicle.
+- The improved follow-me is verified at the command-stream level against a
+  simulator; the flight tuning constants may still need adjusting on a vehicle.
 
 Planned work is tracked in [`ROADMAP.md`](ROADMAP.md).
 

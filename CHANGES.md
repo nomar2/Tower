@@ -47,6 +47,11 @@ and Alejandro Moreno.
   once a v2 frame is received from the peer. MAVLink 1 links are unaffected.
 - Connecting to a real vehicle over **UDP** and **USB serial** was tested and
   works.
+- **Flown on hardware** — a MINI Pix running ArduCopter 4.7.0, over a 433 MHz
+  telemetry radio and over Wi-Fi, with MAVLink 1 and MAVLink 2: connection and
+  telemetry, flight-mode changes, arm, takeoff, mission edit / upload / download
+  / run, parameter read-write, reboot, and clearing the vehicle mission. Not yet
+  flown: follow-me and the dronie.
 - **Mission transfer reliability**: the bundled `WaypointManager` used a 15 s
   watchdog with 3 retries, so one lost packet stalled an upload/download for
   15 s and three misses (45 s) aborted it — uploads and downloads over radio or

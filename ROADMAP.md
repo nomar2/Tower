@@ -1,16 +1,19 @@
 # Roadmap
 
-Current state: the app builds with a modern toolchain, runs on Android 16, flies
-missions and follows against a MAVLink simulator, and connects to a real vehicle
-over UDP and USB serial. Bluetooth is not re-checked yet and there is no
-release-signing pipeline.
+Current state: the app builds with a modern toolchain, runs on Android 16, and
+has been flown against a MINI Pix / ArduCopter 4.7.0 over a 433 MHz radio and
+Wi-Fi (MAVLink 1 and 2) — connection, telemetry, mode changes, arm, takeoff,
+mission edit/upload/download/run, parameters, reboot and vehicle-mission-clear
+all work. Follow-me and the dronie are still simulator-only.
 
 ## Priority 1 — make it field-ready and publishable
 
-- [x] **Hardware connectivity** — UDP and USB serial tested and working.
-- [ ] Re-check **Bluetooth** (SiK-style radios).
-- [ ] **In-flight validation** — arm / takeoff / mode changes / mission run /
-      follow-me on a real vehicle, end to end.
+- [x] **Hardware connectivity** — 433 MHz telemetry radio and Wi-Fi tested on a
+      MINI Pix (ArduCopter 4.7.0); earlier UDP / USB-serial checks still stand.
+- [ ] Re-check **Bluetooth** (SiK-style radios) and **USB-direct** on hardware.
+- [x] **In-flight validation** — arm / takeoff / mode changes / mission
+      edit-upload-download-run / parameters / reboot / clear-vehicle-mission
+      verified on a MINI Pix. Still to fly: **follow-me** and the **dronie**.
 - [x] **Signed release build** — `keystore.properties` (or CI secrets) drives a
       `signingConfig`; `./gradlew :Android:assembleProdRelease` produces the
       APK. R8/minify still off (optional; the reflection-based
