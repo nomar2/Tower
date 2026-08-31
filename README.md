@@ -113,6 +113,9 @@ Confirmed working:
 - Reading and writing parameters
 - Shutting the app down cleanly
 
+Tested on phones from **Android 10 to Android 16** (a TCP connection on Android 10
+works fine).
+
 Not yet exercised on hardware: follow-me, the dronie, USB-direct and Bluetooth
 connections, and the sensor-calibration screens (compass / accelerometer /
 radio / ESC).

@@ -1,11 +1,11 @@
 # Roadmap
 
-Current state: the app builds with a modern toolchain, runs on Android 16, and
-has been flown against a MINI Pix / ArduCopter 4.7.0 over a 433 MHz radio, Wi-Fi
-and a TCP link (MAVLink 1 and 2) — connection, telemetry, mode changes, arm,
-takeoff, mission edit/upload/download/run, parameters, reboot and
-vehicle-mission-clear all work. Follow-me and the dronie are still
-simulator-only.
+Current state: the app builds with a modern toolchain, runs on phones from
+Android 10 to Android 16, and has been flown against a MINI Pix / ArduCopter
+4.7.0 over a 433 MHz radio, Wi-Fi and a TCP link (MAVLink 1 and 2) — connection,
+telemetry, mode changes, arm, takeoff, mission edit/upload/download/run,
+parameters, reboot and vehicle-mission-clear all work. Follow-me and the dronie
+are still simulator-only.
 
 ## Priority 1 — make it field-ready and publishable
 

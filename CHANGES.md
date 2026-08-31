@@ -55,7 +55,8 @@ and Alejandro Moreno.
   telemetry radio, over Wi-Fi and over a TCP link, with MAVLink 1 and MAVLink 2:
   connection and telemetry, flight-mode changes, arm, takeoff, mission edit /
   upload / download / run, parameter read-write, reboot, and clearing the vehicle
-  mission. Not yet flown: follow-me and the dronie.
+  mission. Verified on phones from Android 10 to Android 16. Not yet flown:
+  follow-me and the dronie.
 - **Mission transfer reliability**: the bundled `WaypointManager` used a 15 s
   watchdog with 3 retries, so one lost packet stalled an upload/download for
   15 s and three misses (45 s) aborted it — uploads and downloads over radio or
