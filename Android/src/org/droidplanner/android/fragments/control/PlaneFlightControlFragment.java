@@ -137,11 +137,6 @@ public class PlaneFlightControlFragment extends BaseFlightControlFragment {
         armedButtons = view.findViewById(R.id.mc_armed_buttons);
         mInFlightButtons = view.findViewById(R.id.mc_connected_buttons);
 
-        padBottomBarContent(mDisconnectedButtons);
-        padBottomBarContent(disarmedButtons);
-        padBottomBarContent(armedButtons);
-        padBottomBarContent(mInFlightButtons);
-
         final View connectBtn = view.findViewById(R.id.mc_connectBtn);
         connectBtn.setOnClickListener(this);
 

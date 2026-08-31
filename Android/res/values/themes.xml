@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- the theme applied to the application or activity -->
     <style name="CustomActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@android:color/white</item>
+
+        <!--
+        This 2016 layout set positions its own content against opaque system
+        bars. On Android 15 (API 35) targetSdk 35 would force edge-to-edge and
+        draw the bottom connection bar under the navigation bar; opt out there.
+        API 36+ ignores this flag, so FlightDataFragment / EditorActivity also
+        pad their bottom bars by the navigation-bar inset in code.
+        -->
+        <item name="android:windowOptOutEdgeToEdgeEnforcement" tools:targetApi="35">true</item>
 
         <item name="android:actionMenuTextAppearance">@style/CustomActionBarTheme.ActionBar.Text</item>
         <item name="actionMenuTextAppearance">@style/CustomActionBarTheme.ActionBar.Text</item>

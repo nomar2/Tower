@@ -107,23 +107,4 @@ public abstract class BaseFlightControlFragment extends ApiListenerFragment impl
 
         locationSettingsChecker.check();
     }
-
-    /**
-     * targetSdk 35+ is drawn edge-to-edge. Pads a bottom button bar so its
-     * background bleeds under the navigation bar (3-button or gesture) while the
-     * buttons stay above it. {@code container} may be the button row itself or a
-     * CardView wrapping it.
-     */
-    protected static void padBottomBarContent(View container) {
-        if (container == null)
-            return;
-
-        View target = container;
-        if (container instanceof android.view.ViewGroup && !(container instanceof android.widget.LinearLayout)) {
-            final android.view.ViewGroup group = (android.view.ViewGroup) container;
-            if (group.getChildCount() > 0)
-                target = group.getChildAt(0);
-        }
-        org.droidplanner.android.activities.helpers.SuperUI.padForBottomSystemBars(target);
-    }
 }

@@ -230,6 +230,11 @@ public class FlightDataFragment extends ApiListenerFragment implements SlidingDr
         mSlidingPanel = (SlidingUpPanelLayout) view.findViewById(R.id.slidingPanelContainer);
         mSlidingPanel.addPanelSlideListener(slidingPanelListenerMgr);
 
+        // targetSdk 35+ is edge-to-edge: the collapsed panel (the connection /
+        // flight-action bar) would otherwise sit under the navigation bar.
+        // SlidingUpPanelLayout offsets the panel by its own bottom padding.
+        org.droidplanner.android.activities.helpers.SuperUI.padForBottomSystemBars(mSlidingPanel);
+
         warningText = (TextView) view.findViewById(R.id.failsafeTextView);
         warningContainer = view.findViewById(R.id.warningContainer);
         ImageView closeWarningView = (ImageView) view.findViewById(R.id.close_warning_view);
