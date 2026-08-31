@@ -503,6 +503,9 @@
     <string name="mission_send_failed">Could not send the mission. Check the connection and try again.</string>
     <string name="mission_load_retry">Slow link — requesting the mission again…</string>
     <string name="mission_load_failed">Could not download the mission. Check the connection and try again.</string>
+    <string name="mission_uploading">Sending the mission to the vehicle…</string>
+    <string name="mission_downloading">Downloading the mission from the vehicle…</string>
+    <string name="mission_clearing">Clearing the mission on the vehicle…</string>
 
     <!-- Telemetry widget labels -->
     <string name="label_widget_solo_video">Solo Video</string>

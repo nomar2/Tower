@@ -60,6 +60,7 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
         superIntentFilter.addAction(AttributeEvent.STATE_CONNECTED);
         superIntentFilter.addAction(AttributeEvent.STATE_DISCONNECTED);
         superIntentFilter.addAction(SettingsFragment.ACTION_ADVANCED_MENU_UPDATED);
+        superIntentFilter.addAction(MissionProxy.ACTION_MISSION_TRANSFER);
     }
 
     private final BroadcastReceiver superReceiver = new BroadcastReceiver() {
@@ -78,9 +79,57 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
                 case SettingsFragment.ACTION_ADVANCED_MENU_UPDATED:
                     supportInvalidateOptionsMenu();
                     break;
+
+                case MissionProxy.ACTION_MISSION_TRANSFER:
+                    if (intent.getBooleanExtra(MissionProxy.EXTRA_TRANSFER_ACTIVE, false)) {
+                        showMissionTransferDialog(intent.getIntExtra(MissionProxy.EXTRA_TRANSFER_KIND, -1));
+                    } else {
+                        dismissMissionTransferDialog();
+                    }
+                    break;
             }
         }
     };
+
+    private androidx.appcompat.app.AlertDialog missionTransferDialog;
+
+    private void showMissionTransferDialog(int kind) {
+        if (isFinishing())
+            return;
+
+        dismissMissionTransferDialog();
+
+        final int messageResId;
+        switch (kind) {
+            case MissionProxy.TRANSFER_DOWNLOAD:
+                messageResId = R.string.mission_downloading;
+                break;
+            case MissionProxy.TRANSFER_CLEAR:
+                messageResId = R.string.mission_clearing;
+                break;
+            default:
+                messageResId = R.string.mission_uploading;
+                break;
+        }
+
+        final View content = getLayoutInflater().inflate(R.layout.dialog_mission_transfer, null);
+        ((android.widget.TextView) content.findViewById(R.id.mission_transfer_message))
+                .setText(messageResId);
+
+        missionTransferDialog = new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setView(content)
+                .setCancelable(false)
+                .create();
+        missionTransferDialog.setCanceledOnTouchOutside(false);
+        missionTransferDialog.show();
+    }
+
+    private void dismissMissionTransferDialog() {
+        if (missionTransferDialog != null) {
+            missionTransferDialog.dismiss();
+            missionTransferDialog = null;
+        }
+    }
 
     private ScreenOrientation screenOrientation = new ScreenOrientation(this);
     private LocalBroadcastManager lbm;
@@ -199,6 +248,7 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
     @Override
     public void onDestroy() {
         super.onDestroy();
+        dismissMissionTransferDialog();
         if (mAppServiceBound) {
             try {
                 unbindService(this);
@@ -225,6 +275,13 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
             onDroneDisconnected();
 
         lbm.sendBroadcast(new Intent(MissionProxy.ACTION_MISSION_PROXY_UPDATE));
+
+        // Re-attach the progress dialog if a mission transfer is still running
+        // (e.g. the activity was recreated on rotation mid-transfer).
+        final MissionProxy missionProxy = dpApp.getMissionProxy();
+        if (missionProxy != null && missionProxy.isTransferActive()) {
+            showMissionTransferDialog(missionProxy.getActiveTransferKind());
+        }
     }
 
     @Override
@@ -255,6 +312,7 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
     @Override
     public void onStop() {
         super.onStop();
+        dismissMissionTransferDialog();
         dpApp.removeApiListener(this);
     }
 

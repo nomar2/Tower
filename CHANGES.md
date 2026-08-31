@@ -49,6 +49,8 @@ and Alejandro Moreno.
   Wi-Fi regularly needed a manual retry. The watchdog is now 3 s with 6 retries,
   and the app itself re-issues a stalled transfer once and reports a clear
   failure if the link is genuinely down.
+- **Mission transfer progress**: uploading, downloading and clearing the
+  vehicle mission now show a progress dialog for the duration of the transfer.
 
 ### Features
 

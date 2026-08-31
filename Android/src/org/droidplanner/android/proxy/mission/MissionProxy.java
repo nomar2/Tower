@@ -57,6 +57,20 @@ public class MissionProxy implements DPMap.PathSource {
 
     public static final String ACTION_MISSION_PROXY_UPDATE = Utils.PACKAGE_NAME + ".ACTION_MISSION_PROXY_UPDATE";
 
+    /**
+     * Local broadcast that brackets a mission upload / download / vehicle-clear so
+     * the UI can show a progress indicator. {@link #EXTRA_TRANSFER_ACTIVE} is true
+     * when a transfer starts and false when it finishes (success or give-up);
+     * {@link #EXTRA_TRANSFER_KIND} is one of {@link #TRANSFER_UPLOAD},
+     * {@link #TRANSFER_DOWNLOAD}, {@link #TRANSFER_CLEAR}.
+     */
+    public static final String ACTION_MISSION_TRANSFER = Utils.PACKAGE_NAME + ".ACTION_MISSION_TRANSFER";
+    public static final String EXTRA_TRANSFER_ACTIVE = "transfer_active";
+    public static final String EXTRA_TRANSFER_KIND = "transfer_kind";
+    public static final int TRANSFER_UPLOAD = 0;
+    public static final int TRANSFER_DOWNLOAD = 1;
+    public static final int TRANSFER_CLEAR = 2;
+
     private static final int UNDO_BUFFER_SIZE = 30;
 
     private static final IntentFilter eventFilter = new IntentFilter();
@@ -81,6 +95,32 @@ public class MissionProxy implements DPMap.PathSource {
     private int uploadRetriesLeft;
     private int downloadRetriesLeft;
 
+    /** -1 when idle, otherwise the {@code TRANSFER_*} kind currently in progress. */
+    private int activeTransferKind = -1;
+
+    public boolean isTransferActive() {
+        return activeTransferKind != -1;
+    }
+
+    public int getActiveTransferKind() {
+        return activeTransferKind;
+    }
+
+    private void beginTransfer(int kind) {
+        activeTransferKind = kind;
+        lbm.sendBroadcast(new Intent(ACTION_MISSION_TRANSFER)
+                .putExtra(EXTRA_TRANSFER_ACTIVE, true)
+                .putExtra(EXTRA_TRANSFER_KIND, kind));
+    }
+
+    private void endTransfer() {
+        if (activeTransferKind == -1)
+            return;
+        activeTransferKind = -1;
+        lbm.sendBroadcast(new Intent(ACTION_MISSION_TRANSFER)
+                .putExtra(EXTRA_TRANSFER_ACTIVE, false));
+    }
+
     private final Runnable uploadTimeoutCheck = new Runnable() {
         @Override
         public void run() {
@@ -93,6 +133,7 @@ public class MissionProxy implements DPMap.PathSource {
                 transferWatchdog.postDelayed(this, TRANSFER_TIMEOUT_MS);
             } else {
                 Toast.makeText(context, R.string.mission_send_failed, Toast.LENGTH_LONG).show();
+                endTransfer();
             }
         }
     };
@@ -109,6 +150,7 @@ public class MissionProxy implements DPMap.PathSource {
                 transferWatchdog.postDelayed(this, TRANSFER_TIMEOUT_MS);
             } else {
                 Toast.makeText(context, R.string.mission_load_failed, Toast.LENGTH_LONG).show();
+                endTransfer();
             }
         }
     };
@@ -120,6 +162,8 @@ public class MissionProxy implements DPMap.PathSource {
             switch (action) {
                 case AttributeEvent.MISSION_RECEIVED:
                     transferWatchdog.removeCallbacks(downloadTimeoutCheck);
+                    if (activeTransferKind == TRANSFER_DOWNLOAD)
+                        endTransfer();
                     // fall through
                 case AttributeEvent.MISSION_DRONIE_CREATED:
                 case AttributeEvent.MISSION_UPDATED:
@@ -129,6 +173,7 @@ public class MissionProxy implements DPMap.PathSource {
 
                 case AttributeEvent.MISSION_SENT:
                     transferWatchdog.removeCallbacks(uploadTimeoutCheck);
+                    endTransfer();
                     break;
             }
         }
@@ -782,15 +827,50 @@ public class MissionProxy implements DPMap.PathSource {
         if (drone == null || !drone.isConnected())
             return;
 
+        beginTransfer(TRANSFER_DOWNLOAD);
         downloadRetriesLeft = 1;
         transferWatchdog.removeCallbacks(downloadTimeoutCheck);
         transferWatchdog.postDelayed(downloadTimeoutCheck, TRANSFER_TIMEOUT_MS);
         MissionApi.getApi(drone).loadWaypoints();
     }
 
+    /**
+     * Erases the mission stored on the flight controller ({@code MISSION_CLEAR_ALL};
+     * dronekit-android has no dedicated action for it). The autopilot does not
+     * report completion, so the progress indicator is cleared after a short delay.
+     */
+    public void clearVehicleMission() {
+        if (drone == null || !drone.isConnected()) {
+            Toast.makeText(context, R.string.clear_vehicle_not_connected, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        final com.MAVLink.common.msg_mission_clear_all msg = new com.MAVLink.common.msg_mission_clear_all();
+        msg.target_system = 1;
+        msg.target_component = 1;
+
+        try {
+            com.o3dr.android.client.apis.ExperimentalApi.getApi(drone)
+                    .sendMavlinkMessage(new com.o3dr.services.android.lib.mavlink.MavlinkMessageWrapper(msg));
+        } catch (Exception e) {
+            Toast.makeText(context, R.string.clear_vehicle_not_connected, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        beginTransfer(TRANSFER_CLEAR);
+        transferWatchdog.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, R.string.clear_vehicle_mission_sent, Toast.LENGTH_LONG).show();
+                endTransfer();
+            }
+        }, 4000L);
+    }
+
     public void sendMissionToAPM(Drone drone) {
         MissionApi.getApi(drone).setMission(generateMission(), true);
 
+        beginTransfer(TRANSFER_UPLOAD);
         uploadRetriesLeft = 1;
         transferWatchdog.removeCallbacks(uploadTimeoutCheck);
         transferWatchdog.postDelayed(uploadTimeoutCheck, TRANSFER_TIMEOUT_MS);

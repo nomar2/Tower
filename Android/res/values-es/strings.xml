@@ -480,6 +480,9 @@
     <string name="mission_send_failed">No se pudo enviar la misión. Revisa la conexión e inténtalo de nuevo.</string>
     <string name="mission_load_retry">Enlace lento: pidiendo la misión otra vez…</string>
     <string name="mission_load_failed">No se pudo descargar la misión. Revisa la conexión e inténtalo de nuevo.</string>
+    <string name="mission_uploading">Enviando la misión al dron…</string>
+    <string name="mission_downloading">Descargando la misión del dron…</string>
+    <string name="mission_clearing">Borrando la misión del dron…</string>
 
     <!-- Telemetry widget labels -->
     <string name="label_widget_solo_video">Solo Video</string>

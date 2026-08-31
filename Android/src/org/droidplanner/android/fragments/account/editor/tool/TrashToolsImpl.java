@@ -4,10 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
 
-import com.MAVLink.common.msg_mission_clear_all;
 import com.o3dr.android.client.Drone;
-import com.o3dr.android.client.apis.ExperimentalApi;
-import com.o3dr.services.android.lib.mavlink.MavlinkMessageWrapper;
 
 import org.droidplanner.android.R;
 import org.droidplanner.android.dialogs.SupportYesNoDialog;
@@ -123,33 +120,9 @@ class TrashToolsImpl extends EditorToolsImpl implements View.OnClickListener {
         }
     }
 
-    /**
-     * Erases the mission stored on the flight controller with a raw
-     * MISSION_CLEAR_ALL (dronekit-android has no dedicated action for it).
-     */
     private void clearVehicleMission() {
-        final Drone drone = missionProxy == null ? null : missionProxy.getDrone();
-        final Context context = editorToolsFragment.getContext();
-        if (drone == null || !drone.isConnected()) {
-            if (context != null) {
-                Toast.makeText(context, R.string.clear_vehicle_not_connected, Toast.LENGTH_LONG).show();
-            }
-            return;
-        }
-
-        final msg_mission_clear_all msg = new msg_mission_clear_all();
-        msg.target_system = 1;
-        msg.target_component = 1;
-
-        try {
-            ExperimentalApi.getApi(drone).sendMavlinkMessage(new MavlinkMessageWrapper(msg));
-            if (context != null) {
-                Toast.makeText(context, R.string.clear_vehicle_mission_sent, Toast.LENGTH_LONG).show();
-            }
-        } catch (Exception e) {
-            if (context != null) {
-                Toast.makeText(context, R.string.dlg_clear_vehicle_title, Toast.LENGTH_LONG).show();
-            }
+        if (missionProxy != null) {
+            missionProxy.clearVehicleMission();
         }
     }
 
