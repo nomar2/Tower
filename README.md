@@ -65,6 +65,10 @@ Requirements: JDK 17+, Android SDK with platform 34/36 and recent build-tools.
 The `dev` flavor builds `org.droidplanner.android.debug`; the `prod` flavor
 builds the release `org.droidplanner.android`.
 
+The `dronekit-android-3.0.2.aar` under `Android/libs/` is a locally patched copy
+(the upstream repo is offline). The MAVLink 2 patch is documented, as source and
+with a unit test, under [`patches/mavlink2/`](patches/mavlink2/).
+
 ### Release build
 
 `./gradlew :Android:assembleDevDebug` produces a debug APK. For a real
