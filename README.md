@@ -169,6 +169,11 @@ No. Download the APK from the
 **Is it free / open source?**
 Yes, GPLv3, same licence as the original.
 
+**Something not working?**
+See [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) — blank map, USB radio not
+detected, build errors, mission transfer, follow-me — then open an
+[issue](https://github.com/nomar2/Tower/issues).
+
 ## Known limitations
 
 - MAVLink 2 message signing: received signed frames are parsed (signature
