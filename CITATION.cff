@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+title: "Tower GCS (Android 16 build)"
+message: "If you use this software, please cite it using these metadata."
+type: software
+authors:
+  - given-names: "Ramón José"
+    family-names: Moreno
+  - given-names: Alejandro
+    family-names: Moreno
+repository-code: "https://github.com/nomar2/Tower"
+url: "https://github.com/nomar2/Tower"
+abstract: >-
+  Tower GCS is an Android ground control station for UAVs running ArduPilot.
+  It is a maintained fork of DroidPlanner/Tower, updated to build and run on
+  modern Android (10 through 16), with MAVLink 2 support, a reworked GUIDED
+  follow-me, more reliable mission transfer, and connectivity over USB serial
+  (SiK radios), Wi-Fi, TCP and UDP.
+keywords:
+  - android
+  - ardupilot
+  - mavlink
+  - mavlink2
+  - drone
+  - uav
+  - ground-control-station
+  - gcs
+  - droidplanner
+  - tower
+  - telemetry
+license: GPL-3.0-only
+version: 4.0.0.3
+date-released: "2026-09-07"

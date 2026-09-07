@@ -1,0 +1,9 @@
+title: Tower GCS
+description: >-
+  Android ground control station for ArduPilot drones. Maintained fork of
+  DroidPlanner/Tower, updated for Android 10-16, with MAVLink 2 and USB / Wi-Fi
+  / TCP / UDP telemetry.
+theme: jekyll-theme-cayman
+show_downloads: true
+url: "https://nomar2.github.io"
+baseurl: "/Tower"

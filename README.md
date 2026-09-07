@@ -1,12 +1,24 @@
-# Tower (Android 16 build)
+# Tower GCS — Android ground control station for ArduPilot
 
-Tower is a Ground Control Station (GCS) Android app for UAVs running ArduPilot,
-built on top of [DroneKit-Android](https://github.com/dronekit/dronekit-android).
+**Tower GCS** is a Ground Control Station (GCS) app for Android that flies and
+monitors drones (multicopters, planes and rovers) running **ArduPilot**, over
+**MAVLink 1 and MAVLink 2**. It is a maintained fork of the original
+[DroidPlanner/Tower](https://github.com/DroidPlanner/Tower) — the "DroidPlanner"
+Android GCS — brought back to life on **Android 10 through Android 16**.
 
-This repository is a maintained fork of the original
-[DroidPlanner/Tower](https://github.com/DroidPlanner/Tower) project, updated to
-build and run on current Android versions and with a number of functional fixes
-and improvements.
+It connects to a vehicle over a **USB serial telemetry radio** (SiK, 433 / 915
+MHz, on an OTG cable), **Wi-Fi**, **TCP** or **UDP**, and is built on
+[DroneKit-Android](https://github.com/dronekit/dronekit-android).
+
+**[Download the latest APK →](https://github.com/nomar2/Tower/releases/latest)**
+
+## Screenshots
+
+<!-- Drop PNGs into docs/img/ and they render here and on the Pages site. -->
+
+| Flight screen | Mission editor | Parameters |
+|---|---|---|
+| ![Tower GCS flight telemetry screen](docs/img/flight.png) | ![Tower GCS mission editor](docs/img/editor.png) | ![Tower GCS parameter editor](docs/img/params.png) |
 
 ## What's different in this fork
 
@@ -125,6 +137,38 @@ Not yet exercised on hardware: follow-me, the dronie, Bluetooth telemetry
 adapters, and the sensor-calibration screens (compass / accelerometer /
 radio / ESC).
 
+## FAQ
+
+**Does Tower work on Android 14, 15 or 16?**
+Yes. This fork is built and tested on Android 10 through Android 16. The original
+DroidPlanner/Tower (2016) does not install or run on modern Android; this
+repository is the fix.
+
+**Is this the same as DroidPlanner?**
+Yes — "DroidPlanner" was the project's original name and "Tower" is what it was
+renamed to. This is a maintained fork of that codebase.
+
+**How does it connect to the drone?**
+USB serial telemetry radio (SiK 433 / 915 MHz through a USB-OTG cable), Wi-Fi,
+TCP or UDP. Bluetooth telemetry adapters are not tested yet.
+
+**Does it support MAVLink 2?**
+Yes. The link auto-negotiates MAVLink 2 once the vehicle sends a v2 frame;
+MAVLink 1 links keep working. Received signed frames are accepted (signature not
+verified); outgoing frames are not signed.
+
+**Which flight controllers / firmware?**
+Anything running ArduPilot (ArduCopter, ArduPlane, Rover). Flown against a
+MINI Pix on ArduCopter 4.7.0. It is not a PX4 GCS.
+
+**Is it on the Play Store?**
+No. Download the APK from the
+[Releases page](https://github.com/nomar2/Tower/releases/latest). The
+`-release.apk` is signed with a stable key so updates install over each other.
+
+**Is it free / open source?**
+Yes, GPLv3, same licence as the original.
+
 ## Known limitations
 
 - MAVLink 2 message signing: received signed frames are parsed (signature
@@ -136,7 +180,8 @@ Planned work is tracked in [`ROADMAP.md`](ROADMAP.md).
 
 ## License
 
-GNU General Public License v3.0 — see [`LICENSE.md`](LICENSE.md).
+GNU General Public License v3.0 — see [`LICENSE`](LICENSE) (or the
+formatted [`LICENSE.md`](LICENSE.md)).
 
 This is a modified version of DroidPlanner/Tower. Modifications 2026 by
 Ramón José Moreno and Alejandro Moreno. Original work by Arthur Benemann,
