@@ -7,7 +7,7 @@ Pages landing page expect these filenames:
 |---|---|
 | `flight.png` | the flight-data / telemetry screen with a vehicle connected |
 | `editor.png` | the mission editor with a few waypoints on the map |
-| `params.png` | the parameter list |
+| `Parametros.jpeg` | the parameter list |
 
 Portrait phone screenshots, roughly 1080 px wide, are ideal. Once added, they
 render automatically — no other change needed.
