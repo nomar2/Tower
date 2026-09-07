@@ -25,7 +25,7 @@ rebuilt to install and run on **Android 10 through Android 16**.
 
 | Flight screen | Mission editor | Parameters |
 |---|---|---|
-| ![Tower GCS flight telemetry screen](img/flight.png) | ![Tower GCS mission editor](img/editor.png) | ![Tower GCS parameter editor](img/params.png) |
+| ![Tower GCS flight telemetry screen](img/flight.png) | ![Tower GCS mission editor](img/editor.png) | ![Tower GCS parameter editor](img/Parametros.jpeg) |
 
 ## What it does
 
