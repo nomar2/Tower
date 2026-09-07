@@ -3,12 +3,16 @@
 Relative to DroidPlanner/Tower 4.0.0. Modifications 2026 by Ramón José Moreno
 and Alejandro Moreno.
 
-## 4.0.0.2
+## 4.0.0.3
+
+Everything below, packaged as a signed release. (`4.0.0.2` on GitHub was tagged
+before several of these fixes landed; `4.0.0.3` is the first tag that matches the
+shipped APK.)
 
 ### App identity
 
 - The app is presented as **Tower GCS**; the About screen shows
-  `Tower GCS v4.0.0.2`.
+  `Tower GCS v4.0.0.3`.
 
 ### Build system
 
