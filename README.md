@@ -139,7 +139,7 @@ radio / ESC).
 
 ## FAQ
 
-**Does Tower work on Android 10, 14, 15 or 16?**
+**Does Tower work on Android 14, 15 or 16?**
 Yes. This fork is built and tested on Android 10 through Android 16. The original
 DroidPlanner/Tower (2016) does not install or run on modern Android; this
 repository is the fix.
