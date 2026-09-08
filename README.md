@@ -1,4 +1,4 @@
-# Tower GCS — Android ground control station for ArduPilot
+# Tower GCS — Android ground control station for ArduPilot 
 
 **Tower GCS** is a Ground Control Station (GCS) app for Android that flies and
 monitors drones (multicopters, planes and rovers) running **ArduPilot**, over
