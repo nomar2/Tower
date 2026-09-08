@@ -1,7 +1,7 @@
----
+----
 title: "Tower GCS — Android ground control station for ArduPilot"
 description: "Maintained fork of DroidPlanner/Tower, updated for Android 10-16, with MAVLink 2 and USB / Wi-Fi / TCP / UDP telemetry."
----
+----
 
 # Tower GCS
 
