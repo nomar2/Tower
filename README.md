@@ -138,13 +138,20 @@ adapters, and the sensor-calibration screens (compass / accelerometer /
 radio / ESC).
 
 **Validated against SITL, through the app** (ArduCopter 4.7.1, MAVLink 2,
-phone GPS, simulated vehicle): GUIDED follow-me in every sub-mode — Follow /
-Lead, Circle, Leash (radius in and out), Look-at-Me (holds position, yaws to
-track) — GUIDED go-to (tap the map to fly there), and a full auto mission
-(upload, run, waypoint navigation). Not the
-same as a real flight (no wind, the vehicle's GPS is noise-free, the link is
-local Wi-Fi rather than a telemetry radio), but the end-to-end behaviour
-through Tower is exercised.
+phone GPS, simulated vehicle):
+
+- GUIDED follow-me in every sub-mode — Follow / Lead, Circle, Leash (radius in
+  and out), Look-at-Me (holds position, yaws to track)
+- GUIDED go-to (tap the map to fly there)
+- Flight modes — RTL, Land, Brake
+- Auto missions — upload, run, waypoint navigation, including survey-grid, ROI
+  and spline items
+- Automatic reconnection after the link drops (kill and restart SITL, the app
+  picks the vehicle back up)
+
+Not the same as a real flight (no wind, the vehicle's GPS is noise-free, the
+link is local Wi-Fi rather than a telemetry radio), but the end-to-end
+behaviour through Tower is exercised.
 
 ## FAQ
 

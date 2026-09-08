@@ -63,9 +63,10 @@ shipped APK.)
   phones from Android 10 to Android 16. Not yet flown: follow-me and the dronie.
 - **Validated against SITL, end-to-end through the app** (ArduCopter 4.7.1,
   MAVLink 2, phone GPS, simulated vehicle, local Wi-Fi link): GUIDED follow-me in
-  every sub-mode — Follow / Lead, Circle, Leash (radius in and out), Look-at-Me —
-  GUIDED go-to (tap the map to fly there), and a full auto mission (upload, run,
-  waypoint navigation).
+  every sub-mode (Follow / Lead, Circle, Leash, Look-at-Me); GUIDED go-to;
+  RTL / Land / Brake; auto missions with survey-grid, ROI and spline items
+  (upload, run, waypoint navigation); and automatic reconnection after the link
+  drops.
 - **Mission transfer reliability**: the bundled `WaypointManager` used a 15 s
   watchdog with 3 retries, so one lost packet stalled an upload/download for
   15 s and three misses (45 s) aborted it — uploads and downloads over radio or
