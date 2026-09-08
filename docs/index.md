@@ -55,7 +55,7 @@ Flown against a MINI Pix running **ArduCopter 4.7.0**, MAVLink 1 and 2, over
 USB-serial SiK radio, Wi-Fi, TCP and UDP. Verified on phones from **Android 10
 to Android 16**.
 
-Follow-me (all sub-modes) and auto missions are validated end-to-end against
+Follow-me (all sub-modes) GUIDED go-to  and auto missions are validated end-to-end against
 SITL through the app (ArduCopter 4.7.1, MAVLink 2), with the phone's real GPS.
 Not yet flown on a vehicle: follow-me and the dronie.
 
