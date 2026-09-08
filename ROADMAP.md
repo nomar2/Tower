@@ -7,8 +7,8 @@ and 2) —
 connection, telemetry, mode changes, arm, takeoff, mission
 edit/upload/download/run, parameters, reboot and vehicle-mission-clear all work.
 Follow-me (every sub-mode) and auto missions are validated end-to-end against
-SITL through the app, with the phone's real GPS. Follow-me and the dronie are
-not yet flown on a real vehicle.
+SITL through the app (ArduCopter 4.7.1, MAVLink 2), with the phone's real GPS.
+Follow-me and the dronie are not yet flown on a real vehicle.
 
 ## Priority 1 — make it field-ready and publishable
 
@@ -20,8 +20,8 @@ not yet flown on a real vehicle.
       edit-upload-download-run / parameters / reboot / clear-vehicle-mission
       verified on a MINI Pix. **Follow-me** (Follow / Lead, Circle, Leash,
       Look-at-Me) and **auto missions** validated end-to-end against SITL
-      through the app. Still to fly on a vehicle: **follow-me** and the
-      **dronie**.
+      through the app (ArduCopter 4.7.1, MAVLink 2). Still to fly on a vehicle:
+      **follow-me** and the **dronie**.
 - [x] **Signed release build** — `keystore.properties` (or CI secrets) drives a
       `signingConfig`; `./gradlew :Android:assembleProdRelease` produces the
       APK. R8/minify still off (optional; the reflection-based

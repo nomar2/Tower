@@ -56,8 +56,8 @@ USB-serial SiK radio, Wi-Fi, TCP and UDP. Verified on phones from **Android 10
 to Android 16**.
 
 Follow-me (all sub-modes) and auto missions are validated end-to-end against
-SITL through the app, with the phone's real GPS. Not yet flown on a vehicle:
-follow-me and the dronie.
+SITL through the app (ArduCopter 4.7.1, MAVLink 2), with the phone's real GPS.
+Not yet flown on a vehicle: follow-me and the dronie.
 
 ## Build it yourself
 
