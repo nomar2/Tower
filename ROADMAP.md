@@ -6,7 +6,7 @@ Android 10 to Android 16, and has been flown against a MINI Pix / ArduCopter
 and 2) —
 connection, telemetry, mode changes, arm, takeoff, mission
 edit/upload/download/run, parameters, reboot and vehicle-mission-clear all work.
-Follow-me (every sub-mode) and auto missions are validated end-to-end against
+Follow-me (every sub-mode) GUIDED go-to and auto missions are validated end-to-end against
 SITL through the app (ArduCopter 4.7.1, MAVLink 2), with the phone's real GPS.
 Follow-me and the dronie are not yet flown on a real vehicle.
 
@@ -19,7 +19,7 @@ Follow-me and the dronie are not yet flown on a real vehicle.
 - [x] **In-flight validation** — arm / takeoff / mode changes / mission
       edit-upload-download-run / parameters / reboot / clear-vehicle-mission
       verified on a MINI Pix. **Follow-me** (Follow / Lead, Circle, Leash,
-      Look-at-Me) and **auto missions** validated end-to-end against SITL
+      Look-at-Me) **GUIDED go-to** and **auto missions** validated end-to-end against SITL
       through the app (ArduCopter 4.7.1, MAVLink 2). Still to fly on a vehicle:
       **follow-me** and the **dronie**.
 - [x] **Signed release build** — `keystore.properties` (or CI secrets) drives a
