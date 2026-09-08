@@ -1,4 +1,4 @@
-# Troubleshooting & FAQ
+# Troubleshooting & FAQ 
 
 Common questions, with answers, so you don't have to ask. If your problem
 isn't here, open an issue: https://github.com/nomar2/Tower/issues — include your
