@@ -1,4 +1,4 @@
-# Roadmap
+# Roadmap 
 
 Current state: the app builds with a modern toolchain, runs on phones from
 Android 10 to Android 16, and has been flown against a MINI Pix / ArduCopter
