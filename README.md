@@ -137,6 +137,13 @@ Not yet exercised on hardware: follow-me, the dronie, Bluetooth telemetry
 adapters, and the sensor-calibration screens (compass / accelerometer /
 radio / ESC).
 
+**Validated against SITL, through the app** (phone GPS, simulated vehicle):
+GUIDED follow-me in every sub-mode — Follow / Lead, Circle, Leash (radius in and
+out), Look-at-Me (holds position, yaws to track) — and a full auto mission
+(upload, run, waypoint navigation). Not the same as a real flight (no wind, the
+vehicle's GPS is noise-free, the link is local Wi-Fi rather than a telemetry
+radio), but the end-to-end behaviour through Tower is exercised.
+
 ## FAQ
 
 **Does Tower work on Android 14, 15 or 16?**
@@ -178,8 +185,9 @@ detected, build errors, mission transfer, follow-me — then open an
 
 - MAVLink 2 message signing: received signed frames are parsed (signature
   ignored); outgoing frames are not signed.
-- The improved follow-me is verified at the command-stream level against a
-  simulator; the flight tuning constants may still need adjusting on a vehicle.
+- The improved follow-me is validated end-to-end against SITL through the app
+  (all sub-modes) but not yet flown on a vehicle; the filter and lead constants
+  may still need adjusting in wind and with real GPS noise.
 
 Planned work is tracked in [`ROADMAP.md`](ROADMAP.md).
 
