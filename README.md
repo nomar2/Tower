@@ -140,7 +140,8 @@ radio / ESC).
 **Validated against SITL, through the app** (ArduCopter 4.7.1, MAVLink 2,
 phone GPS, simulated vehicle): GUIDED follow-me in every sub-mode — Follow /
 Lead, Circle, Leash (radius in and out), Look-at-Me (holds position, yaws to
-track) — and a full auto mission (upload, run, waypoint navigation). Not the
+track) — GUIDED go-to (tap the map to fly there), and a full auto mission
+(upload, run, waypoint navigation). Not the
 same as a real flight (no wind, the vehicle's GPS is noise-free, the link is
 local Wi-Fi rather than a telemetry radio), but the end-to-end behaviour
 through Tower is exercised.
