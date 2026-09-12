@@ -38,6 +38,16 @@ flown on a real vehicle.
 
 ## Priority 2 — features
 
+- [ ] **Send `MISSION_ITEM_INT` instead of `MISSION_ITEM`** on mission upload —
+      ArduPilot 4.7+ logs "GCS should send MISSION_ITEM_INT" (mission transfer
+      still works; `MISSION_ITEM`'s `float` lat/lon just have less precision
+      than `MISSION_ITEM_INT`'s fixed-point `int`). The `msg_mission_item_int`
+      class already exists in the vendored `Mavlink.jar`, so this is a small,
+      self-contained patch to `WaypointManager`'s upload path (send
+      `msg_mission_item_int` with `x/y = round(lat/lon * 1e7)` instead of
+      `msg_mission_item`) — no binding regeneration needed, unlike
+      `MISSION_REQUEST_INT` (msg 51, the receive-side counterpart), which is
+      missing from this dialect entirely and does need a new message class.
 - [ ] **USB 5.8 GHz video (Eachine ROTG etc.)** — replace the dead 2016
       `libuvccamera` with a maintained arm64 UVC library
       (`com.herohan:UVCAndroid`) and re-enable the UVC video widget.
