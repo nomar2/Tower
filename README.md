@@ -22,6 +22,11 @@ MHz, on an OTG cable), **Wi-Fi**, **TCP** or **UDP**, and is built on
 
 ## What's different in this fork
 
+- **~37% smaller** — 10 MB vs. the original Tower's 16 MB, after stripping the
+  Baidu Maps SDK (and its native libraries), Droneshare, Google Analytics,
+  Weather Underground, Fabric/Crashlytics and LeakCanary, plus a release build
+  with debug logging compiled out.
+
 - **Toolchain modernised** — Gradle 8, Android Gradle Plugin 8, Kotlin 1.9,
   Java 17, AndroidX, `compileSdk 36`, `minSdk 24`, `targetSdk 35`. Builds an
   ABI-universal APK.
