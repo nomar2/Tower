@@ -101,7 +101,8 @@ shipped APK.)
     tuning constants still to be confirmed in wind and with real GPS noise.
 
 ### Removed dead integrations
-
+- **APK size**: ~10 MB vs. ~16 MB in the original Tower 4.0.0 (~37% smaller),
+  after removing the dead integrations listed above.
 - Droneshare: background upload service, network client and account UI removed.
   The local telemetry-log (TLog) viewer and its session database are kept.
 - Google Analytics (`play-services-analytics`) removed; the "usage statistics"
