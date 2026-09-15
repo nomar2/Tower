@@ -48,6 +48,17 @@ flown on a real vehicle.
       for links that require it (Herelink, some mavlink-router configs).
 - [ ] **Native ArduPilot FOLLOW mode** as an alternative to the GCS-side GUIDED
       loop (offloads tracking to the flight controller).
+- [ ] **Investigate arm/reboot failing on one specific UDP telemetry module** —
+      confirmed not a firmware issue (same result on stock and custom ArduCopter
+      firmware), not a general link issue (flight-mode changes, missions and
+      telemetry all work fine over the same module), and not a hardware command
+      filter (Mission Planner arms/reboots fine over the same module). Only
+      Tower's `MAV_CMD_COMPONENT_ARM_DISARM` / `MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN`
+      `COMMAND_LONG` fails, with nothing logged anywhere (not even a rejection).
+      No other Tower action was confirmed to send a plain `COMMAND_LONG` over
+      this module to check whether it's specific to these two commands or to
+      `COMMAND_LONG` in general. Next step: capture the Tower TLog for a failed
+      attempt and inspect the actual bytes sent.
 
 ## Priority 3 — modernization / polish
 

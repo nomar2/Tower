@@ -25,6 +25,13 @@ and Alejandro Moreno.
     MESSAGE` action handler) was hardcoding `null` instead. Both now thread a
     listener through, so a raw command sent this way can be ack-tracked the same
     way as any other command.
+- **Verified**: on a lossy UDP telemetry link that used to fail arm/reboot
+  silently, the retry now either succeeds or reports a clear failure. On one
+  specific UDP telemetry module, arm/disarm and reboot still don't take effect
+  even with the retry — everything else works fine over that module, and
+  arm/disarm/reboot work fine over other links, including Mission Planner over
+  that same module, and with both stock and custom ArduCopter firmware on the
+  vehicle. Cause not yet identified; tracked in `ROADMAP.md`.
 
 ### Mission upload
 

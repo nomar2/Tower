@@ -206,6 +206,14 @@ detected, build errors, mission transfer, follow-me — then open an
 - The improved follow-me is validated end-to-end against SITL through the app
   (all sub-modes) but not yet flown on a vehicle; the filter and lead constants
   may still need adjusting in wind and with real GPS noise.
+- On one specific UDP telemetry module (a real vehicle, both stock and custom
+  ArduCopter firmware), arm/disarm and reboot don't take effect over that link,
+  while everything else (flight-mode changes, missions, telemetry) works fine
+  over the same link, and arm/disarm/reboot work fine over other links (USB-SiK,
+  and Mission Planner over that same UDP module). No error is shown or logged
+  anywhere involved — the retry added in 4.0.0.5 reports the failure clearly
+  instead of doing nothing, but the underlying cause on that module is still
+  unidentified. Not reproduced on any other link.
 
 Planned work is tracked in [`ROADMAP.md`](ROADMAP.md).
 
