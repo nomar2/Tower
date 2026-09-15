@@ -48,6 +48,19 @@ flown on a real vehicle.
       `msg_mission_item`) — no binding regeneration needed, unlike
       `MISSION_REQUEST_INT` (msg 51, the receive-side counterpart), which is
       missing from this dialect entirely and does need a new message class.
+- [ ] Arm and Reboot have no retry on a lossy link
+      MAV_CMD_COMPONENT_ARM_DISARM (arm) and MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN (reboot)
+      are sent as a single COMMAND_LONG, fire-and-forget, with no ACK-wait or retry —
+      unlike mission upload/download, which already got a watchdog + retry.
+      On a link with real packet loss (confirmed: a real vehicle that arms/reboots fine
+      over USB-SiK failed to do either over a lossy UDP telemetry link), a single dropped
+      packet silently fails the command — no error shown, nothing happens.
+      Fix would follow the same pattern already used for missions: send the command,
+      start a short timeout, and if no COMMAND_ACK arrives, retry once or twice before
+      reporting a clear failure — instead of a single unacknowledged send.
+      Reproduced with: a real vehicle, arms/reboots fine over USB-SiK, fails intermittently
+      over a separate lossy UDP telemetry link (Wi-Fi bridge). Not reproduced on SITL
+      (no packet loss there).
 - [ ] **USB 5.8 GHz video (Eachine ROTG etc.)** — replace the dead 2016
       `libuvccamera` with a maintained arm64 UVC library
       (`com.herohan:UVCAndroid`) and re-enable the UVC video widget.
