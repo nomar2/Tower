@@ -15,6 +15,12 @@ and Alejandro Moreno.
   right before it goes on the wire; nothing else about the upload/download
   protocol or its retry logic changed. `msg_mission_item_int` already existed in
   the vendored `Mavlink.jar`, so no binding regeneration was needed.
+- **Verified against SITL** — uploaded a mission from Tower to ArduCopter 4.7.1
+  (MAVLink 2); the "GCS should send MISSION_ITEM_INT" log line no longer
+  appears. (The vehicle still asks for each item with the older
+  `MISSION_REQUEST` rather than `MISSION_REQUEST_INT` — that's the flight
+  controller's own request format and outside what this patch touches; it
+  doesn't block the upload.)
 
 ## 4.0.0.3
 
