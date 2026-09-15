@@ -59,7 +59,6 @@ flown on a real vehicle.
       timeout, and retry once or twice on missing `COMMAND_ACK` before reporting a
       clear failure. Reproduced with a real vehicle over a lossy UDP Wi-Fi bridge;
       not reproduced on SITL (no packet loss there).
-
 - [ ] **USB 5.8 GHz video (Eachine ROTG etc.)** — replace the dead 2016
       `libuvccamera` with a maintained arm64 UVC library
       (`com.herohan:UVCAndroid`) and re-enable the UVC video widget.
