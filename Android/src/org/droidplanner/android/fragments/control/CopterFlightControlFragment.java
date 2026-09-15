@@ -265,7 +265,7 @@ public class CopterFlightControlFragment extends BaseFlightControlFragment imple
                 break;
 
             case R.id.mc_disarmBtn:
-                VehicleApi.getApi(drone).arm(false);
+                armWithRetry(drone, false);
                 eventLabel = "Disarm";
                 break;
 
@@ -365,7 +365,7 @@ public class CopterFlightControlFragment extends BaseFlightControlFragment imple
         SlideToUnlockDialog unlockDialog = SlideToUnlockDialog.newInstance("arm", new Runnable() {
             @Override
             public void run() {
-                VehicleApi.getApi(getDrone()).arm(true);
+                armWithRetry(getDrone(), true);
             }
         });
         unlockDialog.show(getChildFragmentManager(), "Slide To Arm");

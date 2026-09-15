@@ -3,7 +3,28 @@
 Relative to DroidPlanner/Tower 4.0.0. Modifications 2026 by Ramón José Moreno
 and Alejandro Moreno.
 
-## 4.0.0.4
+## 4.0.0.5
+
+### Arm and Reboot retry
+
+- **Arm/disarm and reboot now retry on a missing ACK** — `MAV_CMD_COMPONENT_ARM_DISARM`
+  and `MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN` are single `COMMAND_LONG` commands with no
+  protocol-level retry of their own (unlike mission upload/download, which already had
+  a watchdog). On a lossy link, a single dropped packet used to fail the command
+  silently — no error, nothing happens. Reproduced on hardware: a vehicle that arms
+  and reboots fine over USB-SiK failed to do either over a lossy UDP telemetry link.
+  - Arm/disarm now resends up to 2 times if the flight controller's `COMMAND_ACK`
+    doesn't arrive within DroneKit's 2 s timeout, before showing a clear failure
+    message. This reuses the aar's existing `DroneCommandTracker` (already tracked
+    every `msg_command_long`/`msg_set_mode` by ack — the app just wasn't passing a
+    listener into `VehicleApi.arm()`, so the tracker never engaged). No aar changes
+    needed.
+  - Reboot gets the same retry, but needed a small aar patch: `ExperimentalApi
+    .sendMavlinkMessage()` had no listener-accepting overload, and the one place
+    that could have forwarded a listener (`GenericMavLinkDrone`'s `SEND_MAVLINK_
+    MESSAGE` action handler) was hardcoding `null` instead. Both now thread a
+    listener through, so a raw command sent this way can be ack-tracked the same
+    way as any other command.
 
 ### Mission upload
 

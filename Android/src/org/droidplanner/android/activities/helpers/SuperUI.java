@@ -535,10 +535,15 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
         }
     }
 
+    private static final int REBOOT_RETRY_LIMIT = 2;
+
     /**
      * Sends MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN (246) with param1 = 1 to reboot the
      * autopilot. Uses the raw mavlink channel because dronekit-android has no
-     * dedicated reboot action.
+     * dedicated reboot action. Like arm/disarm, this is a single COMMAND_LONG with
+     * no protocol-level retry, so a dropped packet on a lossy link used to fail
+     * silently - this now waits for the COMMAND_ACK (DroneCommandTracker's 2s
+     * timeout) and resends up to REBOOT_RETRY_LIMIT times before reporting failure.
      */
     private void rebootVehicle() {
         final Drone drone = dpApp.getDrone();
@@ -547,6 +552,11 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
             return;
         }
 
+        sendRebootCommand(drone, 0);
+        Toast.makeText(getApplicationContext(), R.string.reboot_vehicle_sent, Toast.LENGTH_LONG).show();
+    }
+
+    private void sendRebootCommand(final Drone drone, final int attempt) {
         final msg_command_long cmd = new msg_command_long();
         cmd.command = 246; // MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN
         cmd.confirmation = 0;
@@ -561,10 +571,23 @@ public abstract class SuperUI extends AppCompatActivity implements DroidPlannerA
         cmd.target_component = 1;
 
         try {
-            ExperimentalApi.getApi(drone).sendMavlinkMessage(new MavlinkMessageWrapper(cmd));
-            Toast.makeText(getApplicationContext(), R.string.reboot_vehicle_sent, Toast.LENGTH_LONG).show();
+            ExperimentalApi.getApi(drone).sendMavlinkMessage(new MavlinkMessageWrapper(cmd), new SimpleCommandListener() {
+                @Override
+                public void onTimeout() {
+                    if (attempt < REBOOT_RETRY_LIMIT) {
+                        sendRebootCommand(drone, attempt + 1);
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.reboot_vehicle_failed, Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onError(int error) {
+                    Toast.makeText(getApplicationContext(), R.string.reboot_vehicle_failed, Toast.LENGTH_LONG).show();
+                }
+            });
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), R.string.error_kill_switch_failed, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.reboot_vehicle_failed, Toast.LENGTH_LONG).show();
         }
     }
 

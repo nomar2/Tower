@@ -469,6 +469,8 @@
     <string name="longitude_empty">Long: —</string>
     <string name="longitude_telem">Long: %s°</string>
     <string name="menu_kill_switch">Kill Switch</string>
+    <string name="reboot_vehicle_failed">No se pudo reiniciar el controlador de vuelo. Comprueba la conexión e inténtalo de nuevo.</string>
+    <string name="arm_command_failed">No se pudo armar/desarmar. Comprueba la conexión e inténtalo de nuevo.</string>
     <string name="label_clear_selected">Borrar seleccionado</string>
     <string name="unsaved_param_warning">Tiene cambios no guardados</string>
     <string name="error_kill_switch_unsupported">El comando KILL SWITCH no está soportado!</string>

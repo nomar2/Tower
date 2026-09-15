@@ -489,6 +489,8 @@
     <string name="reboot_vehicle_unlock">reboot flight controller</string>
     <string name="reboot_vehicle_sent">Reboot command sent to the flight controller</string>
     <string name="reboot_vehicle_no_drone">Connect to a vehicle first</string>
+    <string name="reboot_vehicle_failed">Could not reboot the flight controller. Check the connection and try again.</string>
+    <string name="arm_command_failed">Could not arm/disarm. Check the connection and try again.</string>
     <string name="menu_exit_app">Shut down &amp; exit</string>
     <string name="exit_app_title">Exit Tower GCS</string>
     <string name="exit_app_confirm">Disconnect from the vehicle and close the app?</string>

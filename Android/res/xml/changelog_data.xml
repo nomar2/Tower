@@ -15,6 +15,10 @@
     </changelogversion>
     -->
 
+    <changelogversion versionName="4.0.0.5" changeDate="Sep 15, 2026">
+        <changelogtext>Arm/disarm and "Reboot flight controller" now retry (up to 2 times) if the flight controller doesn't acknowledge, instead of silently failing on a lossy link</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="4.0.0.4" changeDate="Sep 15, 2026">
         <changelogtext>Mission upload now sends MISSION_ITEM_INT (fixed-point lat/lon) instead of the older MISSION_ITEM (float); ArduPilot 4.7+ no longer logs "GCS should send MISSION_ITEM_INT"</changelogtext>
     </changelogversion>

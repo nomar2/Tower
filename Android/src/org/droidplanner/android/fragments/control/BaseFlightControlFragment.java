@@ -14,10 +14,13 @@ import android.widget.Toast;
 import com.google.android.gms.location.LocationRequest;
 import com.o3dr.android.client.Drone;
 import com.o3dr.android.client.apis.FollowApi;
+import com.o3dr.android.client.apis.VehicleApi;
 import com.o3dr.services.android.lib.drone.attribute.AttributeType;
 import com.o3dr.services.android.lib.gcs.follow.FollowState;
 import com.o3dr.services.android.lib.gcs.follow.FollowType;
+import com.o3dr.services.android.lib.model.SimpleCommandListener;
 
+import org.droidplanner.android.R;
 import org.droidplanner.android.activities.DrawerNavigationUI;
 import org.droidplanner.android.fragments.FlightDataFragment;
 import org.droidplanner.android.fragments.SettingsFragment;
@@ -72,6 +75,46 @@ public abstract class BaseFlightControlFragment extends ApiListenerFragment impl
     @Override
     public void onApiDisconnected(){
         getBroadcastManager().unregisterReceiver(receiver);
+    }
+
+    private static final int ARM_RETRY_LIMIT = 2;
+
+    /**
+     * Arms or disarms with a retry on top of DroneCommandTracker's 2s COMMAND_ACK
+     * timeout. MAV_CMD_COMPONENT_ARM_DISARM is a single COMMAND_LONG with no
+     * protocol-level retry (unlike mission upload/download), so a single dropped
+     * packet on a lossy link used to fail silently - this resends up to
+     * ARM_RETRY_LIMIT times before reporting a clear failure.
+     */
+    protected void armWithRetry(final Drone drone, final boolean arm) {
+        armWithRetry(drone, arm, 0);
+    }
+
+    private void armWithRetry(final Drone drone, final boolean arm, final int attempt) {
+        if (drone == null) {
+            return;
+        }
+        VehicleApi.getApi(drone).arm(arm, new SimpleCommandListener() {
+            @Override
+            public void onTimeout() {
+                if (attempt < ARM_RETRY_LIMIT) {
+                    armWithRetry(drone, arm, attempt + 1);
+                } else {
+                    showArmFailure();
+                }
+            }
+
+            @Override
+            public void onError(int error) {
+                showArmFailure();
+            }
+        });
+    }
+
+    private void showArmFailure() {
+        if (isAdded()) {
+            Toast.makeText(getActivity(), R.string.arm_command_failed, Toast.LENGTH_LONG).show();
+        }
     }
 
     protected void toggleFollowMe() {

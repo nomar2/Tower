@@ -38,17 +38,6 @@ flown on a real vehicle.
 
 ## Priority 2 — features
 
-- [ ] **Arm and Reboot have no retry on a lossy link** — `MAV_CMD_COMPONENT_ARM_DISARM`
-      (arm) and `MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN` (reboot) are sent as a single
-      `COMMAND_LONG`, fire-and-forget, with no ACK-wait or retry — unlike mission
-      upload/download, which already got a watchdog + retry. On a link with real
-      packet loss (confirmed: a real vehicle that arms/reboots fine over USB-SiK
-      failed to do either over a lossy UDP telemetry link), a single dropped packet
-      silently fails the command — no error shown, nothing happens. Fix would follow
-      the same pattern already used for missions: send the command, start a short
-      timeout, and retry once or twice on missing `COMMAND_ACK` before reporting a
-      clear failure. Reproduced with a real vehicle over a lossy UDP Wi-Fi bridge;
-      not reproduced on SITL (no packet loss there).
 - [ ] **USB 5.8 GHz video (Eachine ROTG etc.)** — replace the dead 2016
       `libuvccamera` with a maintained arm64 UVC library
       (`com.herohan:UVCAndroid`) and re-enable the UVC video widget.
