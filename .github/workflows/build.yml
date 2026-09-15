@@ -26,6 +26,12 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          # The action's default package list is the legacy standalone
+          # "tools" package, which Google has removed from the SDK
+          # repository - installing it now fails the whole step. The actual
+          # platform/build-tools packages are installed explicitly below.
+          packages: ''
 
       - name: Install SDK packages
         run: sdkmanager "platforms;android-36" "build-tools;34.0.0"
