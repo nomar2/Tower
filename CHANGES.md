@@ -3,6 +3,19 @@
 Relative to DroidPlanner/Tower 4.0.0. Modifications 2026 by Ramón José Moreno
 and Alejandro Moreno.
 
+## 4.0.0.4
+
+### Mission upload
+
+- **`MISSION_ITEM_INT` instead of `MISSION_ITEM`** — the bundled `WaypointManager`
+  used to send each waypoint as `msg_mission_item` (`float` lat/lon). ArduPilot
+  4.7+ accepts it but logs "GCS should send MISSION_ITEM_INT", since the fixed-
+  point `int` format doesn't lose precision. Each mission item (including on
+  retry) is now converted to `msg_mission_item_int` (`x/y = round(lat/lon * 1e7)`)
+  right before it goes on the wire; nothing else about the upload/download
+  protocol or its retry logic changed. `msg_mission_item_int` already existed in
+  the vendored `Mavlink.jar`, so no binding regeneration was needed.
+
 ## 4.0.0.3
 
 Everything below, packaged as a signed release. (`4.0.0.2` on GitHub was tagged

@@ -84,7 +84,9 @@ builds the release `org.droidplanner.android`.
 
 The `dronekit-android-3.0.2.aar` under `Android/libs/` is a locally patched copy
 (the upstream repo is offline). The MAVLink 2 patch is documented, as source and
-with a unit test, under [`patches/mavlink2/`](patches/mavlink2/).
+with a unit test, under [`patches/mavlink2/`](patches/mavlink2/); the
+`MISSION_ITEM_INT` mission-upload patch is under
+[`patches/mission-item-int/`](patches/mission-item-int/).
 
 ### Release build
 

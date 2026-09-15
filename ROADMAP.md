@@ -38,16 +38,6 @@ flown on a real vehicle.
 
 ## Priority 2 — features
 
-- [ ] **Send `MISSION_ITEM_INT` instead of `MISSION_ITEM`** on mission upload —
-      ArduPilot 4.7+ logs "GCS should send MISSION_ITEM_INT" (mission transfer
-      still works; `MISSION_ITEM`'s `float` lat/lon just have less precision
-      than `MISSION_ITEM_INT`'s fixed-point `int`). The `msg_mission_item_int`
-      class already exists in the vendored `Mavlink.jar`, so this is a small,
-      self-contained patch to `WaypointManager`'s upload path (send
-      `msg_mission_item_int` with `x/y = round(lat/lon * 1e7)` instead of
-      `msg_mission_item`) — no binding regeneration needed, unlike
-      `MISSION_REQUEST_INT` (msg 51, the receive-side counterpart), which is
-      missing from this dialect entirely and does need a new message class.
 - [ ] **Arm and Reboot have no retry on a lossy link** — `MAV_CMD_COMPONENT_ARM_DISARM`
       (arm) and `MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN` (reboot) are sent as a single
       `COMMAND_LONG`, fire-and-forget, with no ACK-wait or retry — unlike mission
