@@ -88,7 +88,10 @@ with a unit test, under [`patches/mavlink2/`](patches/mavlink2/); the
 `MISSION_ITEM_INT` mission-upload patch is under
 [`patches/mission-item-int/`](patches/mission-item-int/); the arm/disarm and
 reboot retry patch is under
-[`patches/arm-reboot-retry/`](patches/arm-reboot-retry/).
+[`patches/arm-reboot-retry/`](patches/arm-reboot-retry/). The vendored
+`usb-serial-android-0.1.0.aar` (also locally patched, also an offline upstream)
+adds ArduPilot's USB vendor ids — see
+[`patches/usb-serial-ardupilot-vid/`](patches/usb-serial-ardupilot-vid/).
 
 ### Release build
 

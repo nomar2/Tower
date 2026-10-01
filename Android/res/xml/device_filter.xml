@@ -16,4 +16,8 @@
     <usb-device vendor-id="1118" product-id="688"/>
     <usb-device vendor-id="1659" product-id="8963" /><!-- PL2303 -->
     <usb-device vendor-id="11694" /><!-- 0x2DAE: ArduPilot's official USB VID, any product id -->
+    <!-- 0x1209/0x574x: ArduPilot's pid.codes allocation (shared open-source VID,
+         so listed by exact product id rather than wildcarded like 0x2DAE above) -->
+    <usb-device vendor-id="4617" product-id="22336" /> <!-- 0x1209 / 0x5740 -->
+    <usb-device vendor-id="4617" product-id="22337" /> <!-- 0x1209 / 0x5741 -->
 </resources>

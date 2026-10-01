@@ -22,7 +22,7 @@ def displayName = "Tower GCS"
 def versionMajor = 4
 def versionMinor = 0
 def versionPatch = 0
-def versionBuild = 6
+def versionBuild = 7
 
 //Logging levels
 def logLevelVerbose = 2
@@ -190,7 +190,13 @@ dependencies {
     // artifact repository is offline, so the .aar is vendored under libs/.
     implementation(name: 'dronekit-android-3.0.2', ext: 'aar')
     // dronekit-android 3.0.2 POM transitive deps (now declared explicitly):
-    implementation 'org.droidplanner.android:usb-serial-android:0.1.0'
+    // usb-serial-android: locally patched copy (see patches/usb-serial-ardupilot-vid/) -
+    // CDC_ACM_SERIAL now also accepts ArduPilot's official USB vendor id (0x2DAE) with
+    // any product id, so modern Pixhawk-family boards get recognized for a direct USB
+    // connection (device_filter.xml accepting the vendor id for the OS permission
+    // dialog isn't enough on its own - this library's own driver prober does its own
+    // separate exact vendor+product id match and didn't know this vendor id either).
+    implementation(name: 'usb-serial-android-0.1.0', ext: 'aar')
     implementation 'com.github.zafarkhaja:java-semver:0.9.0'
     implementation 'com.jcraft:jsch:0.1.51'
     implementation 'com.googlecode.mp4parser:isoparser:1.1.7'
