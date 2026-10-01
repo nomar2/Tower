@@ -15,6 +15,10 @@
     </changelogversion>
     -->
 
+    <changelogversion versionName="4.0.0.7" changeDate="Oct 2, 2026">
+        <changelogtext>The USB serial driver (not just the Android permission list) now also recognizes ArduPilot's pid.codes vendor id (0x1209), fixing direct USB connection on boards like Pixhawk 2.4.8 clones that didn't use the 0x2DAE vendor id added in 4.0.0.6</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="4.0.0.6" changeDate="Oct 2, 2026">
         <changelogtext>USB device list now also accepts ArduPilot's official vendor id (0x2DAE), covering most modern Pixhawk-family boards for direct USB connection</changelogtext>
     </changelogversion>

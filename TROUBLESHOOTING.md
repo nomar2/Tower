@@ -79,11 +79,18 @@ key.
   found" with nothing else), Android isn't recognizing the device — Tower only
   shows the dialog for USB vendor/product ids listed in `device_filter.xml`.
   As of 4.0.0.6 that list includes ArduPilot's official vendor id (`0x2DAE`,
-  any product id), which covers most modern Pixhawk-family boards for a direct
-  USB connection. If your board still isn't recognized,
+  any product id), which covers most modern Pixhawk-family boards.
+- **If the permission dialog appears but nothing happens afterwards** (no
+  error, device never shows up in the app), the dialog list isn't the problem —
+  the serial driver itself didn't recognize the device either, which is a
+  second, separate list. As of 4.0.0.7 that also accepts ArduPilot's `0x2DAE`
+  vendor id, plus its [pid.codes](https://pid.codes/1209/) allocation (`0x1209`,
+  product ids `0x5740`/`0x5741` — covers some Pixhawk 2.4.8 clones).
+- **Either way, if your board still isn't recognized**,
   [open an issue](https://github.com/nomar2/Tower/issues) with its USB
   vendor/product id (check Windows Device Manager → the device's Properties →
-  Details → "Hardware Ids") and it can likely be added.
+  Details → "Hardware Ids", e.g. `USB\VID_xxxx&PID_xxxx`) and it can likely be
+  added.
 
 ### Connecting to SITL / a simulator
 Use a **TCP** or **UDP** connection to the simulator's host and port

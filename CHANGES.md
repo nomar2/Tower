@@ -3,6 +3,31 @@
 Relative to DroidPlanner/Tower 4.0.0. Modifications 2026 by Ramón José Moreno
 and Alejandro Moreno.
 
+## 4.0.0.7
+
+### USB device compatibility (continued)
+
+- **The USB serial driver itself now also recognizes ArduPilot's vendor ids** —
+  4.0.0.6 only fixed half the problem. `device_filter.xml` controls whether
+  Android *offers the permission dialog*; the actual serial driver
+  (`usb-serial-android`, vendored under `Android/libs/` — its own upstream
+  repository is also offline) does a **separate** exact vendor/product id match
+  to decide which driver to use, and didn't know ArduPilot's vendor ids either.
+  The symptom: the permission dialog appeared, then nothing — the device never
+  showed up anywhere in the app.
+  - `CDC_ACM_SERIAL`'s prober now accepts any product id under ArduPilot's
+    official vendor id (`0x2DAE`), matching the wildcard already added to
+    `device_filter.xml` in 4.0.0.6.
+  - Added ArduPilot's [pid.codes](https://pid.codes/1209/) allocation
+    (`0x1209`, product ids `0x5740`/`0x5741`) to both `device_filter.xml` and
+    the driver — listed by exact product id rather than wildcarded, since
+    `0x1209` is a shared open-source vendor id used by many unrelated
+    projects. Confirmed with a **Pixhawk 2.4.8 clone** (`VID_1209&PID_5741`),
+    which didn't use the `0x2DAE` vendor id from 4.0.0.6 at all.
+  - Documented as source under
+    [`patches/usb-serial-ardupilot-vid/`](https://github.com/nomar2/Tower/tree/main/patches/usb-serial-ardupilot-vid).
+  - Still reported in [#1](https://github.com/nomar2/Tower/issues/1).
+
 ## 4.0.0.6
 
 ### USB device compatibility
