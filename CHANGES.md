@@ -3,6 +3,21 @@
 Relative to DroidPlanner/Tower 4.0.0. Modifications 2026 by Ramón José Moreno
 and Alejandro Moreno.
 
+## 4.0.0.6
+
+### USB device compatibility
+
+- **Added ArduPilot's official USB vendor id (`0x2DAE`)** to `device_filter.xml`,
+  with no product-id restriction, so Android offers the connect permission
+  dialog for any board whose firmware reports that vendor id — covering most
+  modern Pixhawk-family boards (Cube, Holybro, CUAV, mRobotics, etc.) regardless
+  of who manufactured the board. Previously the filter only listed a handful of
+  specific vendor/product id pairs from 2016 (classic Pixhawk, APM 2.5, and a
+  few USB-serial chip families), so a board not on that exact list got no
+  permission prompt at all and the app reported "No Devices found" rather than
+  a real error. Reported in
+  [#1](https://github.com/nomar2/Tower/issues/1).
+
 ## 4.0.0.5
 
 ### Arm and Reboot retry

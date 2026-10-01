@@ -15,6 +15,10 @@
     </changelogversion>
     -->
 
+    <changelogversion versionName="4.0.0.6" changeDate="Oct 2, 2026">
+        <changelogtext>USB device list now also accepts ArduPilot's official vendor id (0x2DAE), covering most modern Pixhawk-family boards for direct USB connection</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="4.0.0.5" changeDate="Sep 15, 2026">
         <changelogtext>Arm/disarm and "Reboot flight controller" now retry (up to 2 times) if the flight controller doesn't acknowledge, instead of silently failing on a lossy link</changelogtext>
     </changelogversion>

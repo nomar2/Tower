@@ -66,7 +66,7 @@ key.
 
 **Bluetooth** telemetry adapters are **not tested** in this fork.
 
-### The USB radio isn't detected
+### The USB radio or flight controller isn't detected
 - Use a proper **USB-OTG** cable/adapter; not all phone-to-USB cables carry the
   OTG signalling.
 - Accept the **"Allow the app to access the USB device?"** dialog when it pops
@@ -75,6 +75,15 @@ key.
   with its own USB connector, or a powered hub.
 - SiK radios enumerate as a USB-serial device; the bundled FTDI driver covers
   the common ones.
+- **If no permission dialog appears at all** ("Connection failed: No Devices
+  found" with nothing else), Android isn't recognizing the device — Tower only
+  shows the dialog for USB vendor/product ids listed in `device_filter.xml`.
+  As of 4.0.0.6 that list includes ArduPilot's official vendor id (`0x2DAE`,
+  any product id), which covers most modern Pixhawk-family boards for a direct
+  USB connection. If your board still isn't recognized,
+  [open an issue](https://github.com/nomar2/Tower/issues) with its USB
+  vendor/product id (check Windows Device Manager → the device's Properties →
+  Details → "Hardware Ids") and it can likely be added.
 
 ### Connecting to SITL / a simulator
 Use a **TCP** or **UDP** connection to the simulator's host and port
