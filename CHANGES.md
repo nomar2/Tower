@@ -3,6 +3,14 @@
 Relative to DroidPlanner/Tower 4.0.0. Modifications 2026 by Ramón José Moreno
 and Alejandro Moreno.
 
+## 4.0.0.8
+
+### Fix
+
+- Settings → Credits → "Project Contributors" linked to the upstream
+  `DroidPlanner/Tower` repository instead of this fork. Now points to
+  `github.com/nomar2/Tower/graphs/contributors`.
+
 ## 4.0.0.7
 
 ### USB device compatibility (continued)
