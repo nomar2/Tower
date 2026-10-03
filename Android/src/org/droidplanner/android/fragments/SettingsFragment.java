@@ -689,7 +689,7 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
             contributorsPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    openWebUrl("https://github.com/DroidPlanner/Tower/graphs/contributors");
+                    openWebUrl("https://github.com/nomar2/Tower/graphs/contributors");
                     return true;
                 }
             });
